@@ -1,0 +1,8 @@
+*.iml
+out/*
+.idea/*
+src/*
+*.class
+*.jar
+*.war
+*.ear
