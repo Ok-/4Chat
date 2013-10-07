@@ -55,7 +55,7 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
         try {
             InterfaceTopic topic = server.getTopic(title);
             topic.unsubscribe(this);
-            topics.remove(topic);
+            topics.remove(title);
         } catch (RemoteException re) {
             re.printStackTrace();
         }
