@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -21,7 +22,6 @@ public class View extends JFrame implements ActionListener {
 
     public View() {
         try {
-            this.client = new ForumClient(this);
             this.chatTabs = new LinkedList<ChatTab>();
 
             // GUI build
@@ -49,6 +49,9 @@ public class View extends JFrame implements ActionListener {
             this.tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
             this.add(tabbedPane);
+
+            this.client = new ForumClient(this);
+            
             this.pack();
         } catch (RemoteException re) {
             re.printStackTrace();
@@ -74,15 +77,16 @@ public class View extends JFrame implements ActionListener {
     }
     
     public void addTab(String title) {
-        JComponent newTab = createPanel(title);
-        GridLayout layoutTab = new GridLayout();
-        newTab.setLayout(layoutTab);
         ChatTab chatTab = new ChatTab(this, title);
-        newTab.add(chatTab);
-        this.chatTabs
-        	.add(chatTab);
-        this.tabbedPane.addTab(title, newTab);
+        if(this.chatTabs == null) {
+        	this.chatTabs = new LinkedList<ChatTab>();
+        }
+        this.chatTabs.
+        	add(chatTab);
+        this.tabbedPane.addTab(title, chatTab);
     }
+    
+    
     
     public void removeTab(String title) {
     	int tabNumber = this.tabbedPane.getTabCount();
