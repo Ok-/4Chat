@@ -26,7 +26,7 @@ public class View extends JFrame implements ActionListener {
             this.chatTabs = new LinkedList<ChatTab>();
 
             // GUI build
-            this.setPreferredSize(new Dimension(500, 400));
+            //this.setPreferredSize(new Dimension(500, 400));
             this.panel = new JPanel();
             this.getContentPane().add(panel);
 
@@ -38,22 +38,25 @@ public class View extends JFrame implements ActionListener {
             GridBagLayout gridbag = new GridBagLayout();
             this.panelTabMenu.setLayout(gridbag);
             
+            
             GridBagConstraints constraints = new GridBagConstraints();
+    		constraints.anchor = GridBagConstraints.NORTHWEST;
+    		constraints.insets = new Insets(10, 0, 10, 0);
             constraints.fill = GridBagConstraints.BOTH;
-            constraints.gridheight = 3;
+            constraints.gridwidth = 3;
             constraints.gridx = 0;
             constraints.gridy = 0;
             this.listChansModel = new DefaultListModel();
             JList listChans = new JList(listChansModel);
     		JScrollPane scrollableList = new JScrollPane(listChans); // Définition de la barre de scroll
-    		scrollableList.setPreferredSize(new Dimension(150,200));
+    		scrollableList.setPreferredSize(this.getPreferredSize());
             this.panelTabMenu.add(listChans, constraints);
 
-            constraints.gridheight = 1;
+            constraints.gridwidth = 1;
             constraints.gridx = 0;
             constraints.gridy = 1;
             this.newTopicText = new JTextField("");
-            this.newTopicText.setPreferredSize(new Dimension(150,10));
+            //this.newTopicText.setPreferredSize(new Dimension(150,10));
             this.panelTabMenu.add(newTopicText, constraints);
 
             constraints.gridx = 1;
