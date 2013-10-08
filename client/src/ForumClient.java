@@ -35,7 +35,7 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
     	while(it.hasNext()) {
     		System.out.println(i);
     		i++;
-    		this.addTopic(((InterfaceTopic) it.next()).getTopic());
+    		this.view.addTopic(((InterfaceTopic) it.next()).getTopic());
     	}
     }
 

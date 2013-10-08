@@ -15,6 +15,7 @@ public class View extends JFrame implements ActionListener {
     public JPanel panel;
     public JTabbedPane tabbedPane;
     public JComponent panelTabMenu;
+    public DefaultListModel listChansModel;
     public JTextField newTopicText;
     public JButton newTopicButton;
     public JButton delTopicButton;
@@ -35,7 +36,8 @@ public class View extends JFrame implements ActionListener {
             // Menu Tab
             this.panelTabMenu = createPanel("menu");
             BoxLayout layoutMenu = new BoxLayout(this.panelTabMenu, BoxLayout.Y_AXIS);
-            JList listChans = new JList();
+            listChansModel = new DefaultListModel();
+            JList listChans = new JList(listChansModel);
             listChans.setPreferredSize(new Dimension(200, 200));
             this.panelTabMenu.add(listChans);
             
@@ -93,6 +95,10 @@ public class View extends JFrame implements ActionListener {
         this.chatTabs.
         	add(chatTab);
         this.tabbedPane.addTab(title, chatTab);
+    }
+    
+    public void addTopic(String title) {
+    	this.listChansModel.addElement(title);
     }
     
     
