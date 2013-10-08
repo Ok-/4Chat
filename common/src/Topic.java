@@ -47,7 +47,7 @@ public class Topic implements InterfaceTopic, Serializable {
         Iterator<InterfaceForumClient> iterator = subscribers.iterator();
         while (iterator.hasNext()) {
             InterfaceForumClient client = iterator.next();
-            client.display(message);
+            client.display(this.topic, message);
         }
     }
 

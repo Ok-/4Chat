@@ -1,4 +1,5 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,12 +17,12 @@ public class View extends JFrame implements ActionListener {
     public JTextField newTopicText;
     public JButton newTopicButton;
     public JButton delTopicButton;
-    public LinkedList<JPanel> chatPanels;
+    public LinkedList<ChatTab> chatTabs;
 
     public View() {
         try {
-            this.client = new ForumClient();
-            this.chatPanels = new LinkedList<JPanel>();
+            this.client = new ForumClient(this);
+            this.chatTabs = new LinkedList<ChatTab>();
 
             // GUI build
             this.setPreferredSize(new Dimension(500, 400));
@@ -62,6 +63,7 @@ public class View extends JFrame implements ActionListener {
         return panel;
     }
 
+    /*
     public JComponent createDialogPanel(String title) {
         JPanel panel = new JPanel(false);
         panel.setName(title);
@@ -73,9 +75,15 @@ public class View extends JFrame implements ActionListener {
         panel.add(textField);
         JButton sendButton = new JButton("Send");
         panel.add(sendButton);
-        this.chatPanels.add(panel);
+        sendButton.addActionListener(this);
+        this.chatElements.put(sendButton, textField);
 
         return panel;
+    }
+    */
+    
+    public void addMessage(String title, String message) {
+    	//this.tabbedPane.getCom
     }
 
     @Override
@@ -91,7 +99,9 @@ public class View extends JFrame implements ActionListener {
                     JComponent newTab = createPanel(title);
                     GridLayout layoutTab = new GridLayout();
                     newTab.setLayout(layoutTab);
-                    newTab.add(this.createDialogPanel(title));
+                    ChatTab chatTab = new ChatTab(this, title);
+                    newTab.add(chatTab);
+                    chatTabs.add(chatTab);
                     this.tabbedPane.addTab(title, newTab);
                 }
             }
@@ -106,7 +116,30 @@ public class View extends JFrame implements ActionListener {
                         this.tabbedPane.remove(i);
                     }
                 }
+                Iterator<ChatTab> iterator = chatTabs.iterator();
+                while (iterator.hasNext()) {
+                	ChatTab tab = iterator.next();
+                	if (tab.getName().compareTo(title) == 0) {
+                		chatTabs.remove(tab);
+                	}
+                }
+                
             }
+        } else {
+        	/*
+        	JButton source = (JButton)e.getSource();
+        	JTextField textField = this.chatTabs.get(source);
+        	if (null != textField) {
+        		String text = textField.getText();
+        		System.out.println("OK");
+        		if (text.compareTo("") != 0) {
+            		System.out.println("OK2");
+            		Container parent = textField.getParent();
+            		String title = parent.getName();
+            		this.client.broadcast(title, text);
+        		}
+        	}
+        	*/
         }
 
         // Check Send buttons
