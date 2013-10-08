@@ -12,10 +12,12 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
 
     public InterfaceForumServer server;
     public LinkedHashMap<String, InterfaceTopic> topics;
+    public View view;
 
-    public ForumClient() throws RemoteException {
+    public ForumClient(View v) throws RemoteException {
         super();
-        topics = new LinkedHashMap<String, InterfaceTopic>();
+        this.topics = new LinkedHashMap<String, InterfaceTopic>();
+        this.view = v;
         try {
             server = (InterfaceForumServer) Naming.lookup("//127.0.0.1:24577/server");
             this.initialize();
@@ -39,9 +41,8 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
      * @throws RemoteException
      */
     @Override
-    public void display(String message) throws RemoteException {
-        //TODO: Build a GUI with swing
-        System.out.println(message);
+    public void display(String title, String message) throws RemoteException {
+        //this.view.;
     }
 
     /**

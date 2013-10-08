@@ -8,5 +8,5 @@ public interface InterfaceForumClient extends Remote{
      * @param message A string which contains the message to send
      * @throws RemoteException
      */
-    public void display(String message) throws RemoteException;
+    public void display(String title, String message) throws RemoteException;
 }
