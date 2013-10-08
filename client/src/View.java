@@ -98,6 +98,20 @@ public class View extends JFrame implements ActionListener {
     		}
     	}
     }
+
+    /*
+     * Server has add a topic, we must add it to the local list
+     */
+    public void addTopic(String title) {
+    	this.listChansModel.addElement(title);
+    }
+
+    /*
+     * Server has remove one topic, we must remove it from the local list
+     */
+    public void removeTopic(String title) {
+    	this.listChansModel.removeElement(title);
+    }
     
     public void addTab(String title) {
         ChatTab chatTab = new ChatTab(this, title);
@@ -107,12 +121,7 @@ public class View extends JFrame implements ActionListener {
         this.chatTabs.
         	add(chatTab);
         this.tabbedPane.addTab(title, chatTab);
-    }
-    
-    public void addTopic(String title) {
-    	this.listChansModel.addElement(title);
-    }
-    
+    }    
     
     
     public void removeTab(String title) {
@@ -137,13 +146,17 @@ public class View extends JFrame implements ActionListener {
         // Check Menu buttons
         if (e.getSource() == newTopicButton) {
             // Add a new topic in the view list
-            String title = newTopicText.getText();
+            /*String title = newTopicText.getText();
             if (title.compareTo("") != 0) {
                 InterfaceTopic topic = this.client.topics.get(title);
                 if (null == topic) {
                     this.client.addTopic(title);
                 }
-            }
+            }*/
+        	JOptionPane.showMessageDialog(this,
+        		    "Not implemented yet",
+        		    "Error",
+        		    JOptionPane.ERROR_MESSAGE);
             
         } else if (e.getSource() == delTopicButton) {
             String title = newTopicText.getText();
