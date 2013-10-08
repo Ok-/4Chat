@@ -62,28 +62,15 @@ public class View extends JFrame implements ActionListener {
         panel.setLayout(new GridLayout(1, 1));
         return panel;
     }
-
-    /*
-    public JComponent createDialogPanel(String title) {
-        JPanel panel = new JPanel(false);
-        panel.setName(title);
-        panel.setLayout(new GridLayout(3, 1));
-        JTextArea chatArea = new JTextArea("Welcome to the #" + title + " channel!\n");
-        chatArea.setEditable(false);
-        panel.add(chatArea);
-        JTextField textField = new JTextField("");
-        panel.add(textField);
-        JButton sendButton = new JButton("Send");
-        panel.add(sendButton);
-        sendButton.addActionListener(this);
-        this.chatElements.put(sendButton, textField);
-
-        return panel;
-    }
-    */
     
     public void addMessage(String title, String message) {
-    	//this.tabbedPane.getCom
+    	Iterator<ChatTab> iterator = chatTabs.iterator();
+    	while(iterator.hasNext()) {
+    		ChatTab tab = iterator.next();
+    		if (tab.getName().compareTo(title) == 0) {
+    			tab.textArea.append(message + "\n");
+    		}
+    	}
     }
 
     @Override
@@ -126,23 +113,18 @@ public class View extends JFrame implements ActionListener {
                 
             }
         } else {
-        	/*
-        	JButton source = (JButton)e.getSource();
-        	JTextField textField = this.chatTabs.get(source);
-        	if (null != textField) {
-        		String text = textField.getText();
-        		System.out.println("OK");
-        		if (text.compareTo("") != 0) {
-            		System.out.println("OK2");
-            		Container parent = textField.getParent();
-            		String title = parent.getName();
-            		this.client.broadcast(title, text);
+        	Iterator<ChatTab> iterator = chatTabs.iterator();
+        	while(iterator.hasNext()) {
+        		ChatTab tab = iterator.next();
+        		if (e.getSource() == tab.sendButton) {
+            		String text = tab.textField.getText();
+            		if (text.compareTo("") != 0) {
+            			String title = tab.getName();
+                		this.client.broadcast(title, text);
+                		tab.textField.setText("");
+            		}
         		}
         	}
-        	*/
         }
-
-        // Check Send buttons
-        // TODO : for each chat tab, check if the send button was pressed
     }
 }
