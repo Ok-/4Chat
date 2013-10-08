@@ -3,8 +3,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -14,7 +12,6 @@ public class View extends JFrame implements ActionListener {
 
     public JPanel panel;
     public JTabbedPane tabbedPane;
-    public JComponent panelTabMenu;
     public DefaultListModel listChansModel;
     public JTextField newTopicText;
     public JButton newTopicButton;
@@ -104,6 +101,7 @@ public class View extends JFrame implements ActionListener {
             gbc.weighty = 1.0;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             panel2.add(subscribeButton, gbc);
+            this.subscribeButton.addActionListener(this);
             final JScrollPane scrollPane1 = new JScrollPane();
             gbc = new GridBagConstraints();
             gbc.gridx = 0;
@@ -179,14 +177,6 @@ public class View extends JFrame implements ActionListener {
             re.printStackTrace();
         }
     }
-
-
-    public JComponent createPanel(String text) {
-        JPanel panel = new JPanel(false);
-        panel.setName(text);
-        panel.setLayout(new GridLayout(1, 1));
-        return panel;
-    }
     
     public void addMessage(String title, String message) {
     	Iterator<ChatTab> iterator = chatTabs.iterator();
@@ -202,7 +192,9 @@ public class View extends JFrame implements ActionListener {
      * Server has add a topic, we must add it to the local list
      */
     public void addTopic(String title) {
-    	this.listChansModel.addElement(title);
+        if (!this.listChansModel.contains(title)) {
+            this.listChansModel.addElement(title);
+        }
     }
 
     /*
@@ -217,8 +209,7 @@ public class View extends JFrame implements ActionListener {
         if(this.chatTabs == null) {
         	this.chatTabs = new LinkedList<ChatTab>();
         }
-        this.chatTabs.
-        	add(chatTab);
+        this.chatTabs.add(chatTab);
         this.tabbedPane.addTab(title, chatTab);
     }    
     
@@ -257,6 +248,12 @@ public class View extends JFrame implements ActionListener {
         		    "Error",
         		    JOptionPane.ERROR_MESSAGE);
             
+        } else if (e.getSource() == subscribeButton) {
+            String title = (String)list.getSelectedValue();
+            if (null != title) {
+                this.client.addTopic(title);
+                this.addTab(title);
+            }
         } else if (e.getSource() == delTopicButton) {
             String title = newTopicText.getText();
             if (title.compareTo("") != 0) {
