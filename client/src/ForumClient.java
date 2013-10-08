@@ -46,7 +46,7 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
      */
     @Override
     public void display(String title, String message) throws RemoteException {
-        //this.view.;
+    	this.view.addMessage(title, message);
     }
 
     /**
