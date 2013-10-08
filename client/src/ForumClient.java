@@ -28,9 +28,13 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
     }
     
     public void initialize() throws RemoteException {
+    	System.out.println("Initializing...");
     	ArrayList<InterfaceTopic> listOfTopics = server.getAllTopics();
     	Iterator it = listOfTopics.iterator();
+    	int i = 1;
     	while(it.hasNext()) {
+    		System.out.println(i);
+    		i++;
     		this.addTopic(((InterfaceTopic) it.next()).getTopic());
     	}
     }
@@ -55,6 +59,7 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
             topic.subscribe(this);
             if (!topics.containsValue(topic)) {
                 topics.put(title, topic);
+                this.view.addTab(title);
             }
         } catch (RemoteException re) {
             re.printStackTrace();
@@ -70,6 +75,7 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
             InterfaceTopic topic = server.getTopic(title);
             topic.unsubscribe(this);
             topics.remove(title);
+            this.view.removeTab(title);
         } catch (RemoteException re) {
             re.printStackTrace();
         }

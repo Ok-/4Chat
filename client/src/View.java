@@ -85,6 +85,34 @@ public class View extends JFrame implements ActionListener {
     public void addMessage(String title, String message) {
     	//this.tabbedPane.getCom
     }
+    
+    public void addTab(String title) {
+        JComponent newTab = createPanel(title);
+        GridLayout layoutTab = new GridLayout();
+        newTab.setLayout(layoutTab);
+        ChatTab chatTab = new ChatTab(this, title);
+        newTab.add(chatTab);
+        this.chatTabs
+        	.add(chatTab);
+        this.tabbedPane.addTab(title, newTab);
+    }
+    
+    public void removeTab(String title) {
+    	int tabNumber = this.tabbedPane.getTabCount();
+        for(int i = 0; i < tabNumber; i++) {
+            String name = this.tabbedPane.getTitleAt(i);
+            if (0 == name.compareTo(title)) {
+                this.tabbedPane.remove(i);
+            }
+        }
+        Iterator<ChatTab> iterator = chatTabs.iterator();
+        while (iterator.hasNext()) {
+        	ChatTab tab = iterator.next();
+        	if (tab.getName().compareTo(title) == 0) {
+        		chatTabs.remove(tab);
+        	}
+        }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -96,35 +124,15 @@ public class View extends JFrame implements ActionListener {
                 InterfaceTopic topic = this.client.topics.get(title);
                 if (null == topic) {
                     this.client.addTopic(title);
-                    JComponent newTab = createPanel(title);
-                    GridLayout layoutTab = new GridLayout();
-                    newTab.setLayout(layoutTab);
-                    ChatTab chatTab = new ChatTab(this, title);
-                    newTab.add(chatTab);
-                    chatTabs.add(chatTab);
-                    this.tabbedPane.addTab(title, newTab);
                 }
             }
+            
         } else if (e.getSource() == delTopicButton) {
             String title = newTopicText.getText();
             if (title.compareTo("") != 0) {
-                this.client.removeTopic(title);
-                int tabNumber = this.tabbedPane.getTabCount();
-                for(int i = 0; i < tabNumber; i++) {
-                    String name = this.tabbedPane.getTitleAt(i);
-                    if (0 == name.compareTo(title)) {
-                        this.tabbedPane.remove(i);
-                    }
-                }
-                Iterator<ChatTab> iterator = chatTabs.iterator();
-                while (iterator.hasNext()) {
-                	ChatTab tab = iterator.next();
-                	if (tab.getName().compareTo(title) == 0) {
-                		chatTabs.remove(tab);
-                	}
-                }
-                
+                this.client.removeTopic(title);                
             }
+            
         } else {
         	/*
         	JButton source = (JButton)e.getSource();

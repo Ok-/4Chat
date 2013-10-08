@@ -23,6 +23,7 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
      */
     @Override
     public InterfaceTopic getTopic(String title) throws RemoteException {
+    	System.out.println("Returning topic " + title);
         InterfaceTopic topic = this.topics.get(title);
         if (null == topic) {
             topic = this.addTopic(title);
@@ -32,7 +33,8 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
 
 	@Override
 	public ArrayList<InterfaceTopic> getAllTopics() throws RemoteException {
-		return new ArrayList<InterfaceTopic>();
+		System.out.println("Returning all topics (" + this.topics.size() + ")");
+		return new ArrayList<InterfaceTopic>(this.topics.values());
 	}
 
     /**
@@ -46,6 +48,7 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
         InterfaceTopic topic = topics.get(title);
         if (null == topic) {
             topic = new Topic(title);
+        	System.out.println("Adding topic " + title);
             topics.put(title, topic);
         }
         return topic;
@@ -57,7 +60,8 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
      * @throws RemoteException
      */
     @Override
-    public void removeTopic(String title) throws RemoteException{
+    public void removeTopic(String title) throws RemoteException {
+    	System.out.println("Removing topic " + title);
         topics.remove(title);
     }
 }
