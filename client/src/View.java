@@ -35,26 +35,38 @@ public class View extends JFrame implements ActionListener {
 
             // Menu Tab
             this.panelTabMenu = createPanel("menu");
-            BoxLayout layoutMenu = new BoxLayout(this.panelTabMenu, BoxLayout.Y_AXIS);
-            listChansModel = new DefaultListModel();
-            JList listChans = new JList(listChansModel);
-            listChans.setPreferredSize(new Dimension(200, 200));
-            this.panelTabMenu.add(listChans);
+            GridBagLayout gridbag = new GridBagLayout();
+            this.panelTabMenu.setLayout(gridbag);
             
-            JPanel subpanel = new JPanel();
-            BoxLayout layoutSubmenu = new BoxLayout(subpanel, BoxLayout.X_AXIS);
-            subpanel.setLayout(layoutSubmenu);
-            this.panel.add(subpanel);
-            this.panelTabMenu.add(listChans);
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.fill = GridBagConstraints.BOTH;
+            constraints.gridheight = 3;
+            constraints.gridx = 0;
+            constraints.gridy = 0;
+            this.listChansModel = new DefaultListModel();
+            JList listChans = new JList(listChansModel);
+    		JScrollPane scrollableList = new JScrollPane(listChans); // Définition de la barre de scroll
+    		scrollableList.setPreferredSize(new Dimension(150,200));
+            this.panelTabMenu.add(listChans, constraints);
+
+            constraints.gridheight = 1;
+            constraints.gridx = 0;
+            constraints.gridy = 1;
             this.newTopicText = new JTextField("");
-            this.panelTabMenu.add(newTopicText);
-            this.newTopicButton = new JButton("Subscribe");
+            this.newTopicText.setPreferredSize(new Dimension(150,10));
+            this.panelTabMenu.add(newTopicText, constraints);
+
+            constraints.gridx = 1;
+            constraints.gridy = 1;
+            this.newTopicButton = new JButton("Create");
             this.newTopicButton.addActionListener(this);
-            this.panelTabMenu.add(newTopicButton);
-            this.delTopicButton = new JButton("Unsubscribe");
+            this.panelTabMenu.add(newTopicButton, constraints);
+
+            constraints.gridx = 2;
+            constraints.gridy = 1;
+            this.delTopicButton = new JButton("Delete");
             this.delTopicButton.addActionListener(this);
-            this.panelTabMenu.add(delTopicButton);
-            this.panelTabMenu.setLayout(layoutMenu);
+            this.panelTabMenu.add(delTopicButton, constraints);
 
             this.tabbedPane.addTab("Menu", panelTabMenu);
             this.tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
