@@ -1,7 +1,10 @@
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class ForumServer extends UnicastRemoteObject implements InterfaceForumServer, Serializable {
 
@@ -26,6 +29,11 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
         }
         return topic;
     }
+
+	@Override
+	public ArrayList<InterfaceTopic> getAllTopics() throws RemoteException {
+		return new ArrayList<InterfaceTopic>();
+	}
 
     /**
      * Add a new discussion thread in the list of available topics. If the discussion thread already exists in the list, it does nothing and if it doesn't exist, it will be created.

@@ -6,3 +6,5 @@ src/*
 *.jar
 *.war
 *.ear
+.classpath
+.project

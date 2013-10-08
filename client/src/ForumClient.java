@@ -2,6 +2,10 @@ import java.io.Serializable;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 public class ForumClient extends UnicastRemoteObject implements InterfaceForumClient, Serializable {
@@ -14,10 +18,19 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
         topics = new LinkedHashMap<String, InterfaceTopic>();
         try {
             server = (InterfaceForumServer) Naming.lookup("//127.0.0.1:24577/server");
+            this.initialize();
         }
         catch(Exception e){
             e.printStackTrace();
         }
+    }
+    
+    public void initialize() throws RemoteException {
+    	ArrayList<InterfaceTopic> listOfTopics = server.getAllTopics();
+    	Iterator it = listOfTopics.iterator();
+    	while(it.hasNext()) {
+    		this.addTopic(((InterfaceTopic) it.next()).getTopic());
+    	}
     }
 
     /**

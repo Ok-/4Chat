@@ -1,6 +1,6 @@
 import java.rmi.RemoteException;
 
-public class Main {
+public class MainClient {
 
     public static void main(final String[] args) {
         View v = new View();
