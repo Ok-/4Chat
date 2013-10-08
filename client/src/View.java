@@ -34,7 +34,16 @@ public class View extends JFrame implements ActionListener {
 
             // Menu Tab
             this.panelTabMenu = createPanel("menu");
-            GridLayout layoutMenu = new GridLayout(2,2);
+            BoxLayout layoutMenu = new BoxLayout(this.panelTabMenu, BoxLayout.Y_AXIS);
+            JList listChans = new JList();
+            listChans.setPreferredSize(new Dimension(200, 200));
+            this.panelTabMenu.add(listChans);
+            
+            JPanel subpanel = new JPanel();
+            BoxLayout layoutSubmenu = new BoxLayout(subpanel, BoxLayout.X_AXIS);
+            subpanel.setLayout(layoutSubmenu);
+            this.panel.add(subpanel);
+            this.panelTabMenu.add(listChans);
             this.newTopicText = new JTextField("");
             this.panelTabMenu.add(newTopicText);
             this.newTopicButton = new JButton("Subscribe");

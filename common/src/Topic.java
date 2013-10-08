@@ -46,6 +46,7 @@ public class Topic implements InterfaceTopic, Serializable {
     public void broadcast(String message) throws RemoteException {
         Iterator<InterfaceForumClient> iterator = subscribers.iterator();
         while (iterator.hasNext()) {
+        	System.out.println("LOL");
             InterfaceForumClient client = iterator.next();
             client.display(this.topic, message);
         }
