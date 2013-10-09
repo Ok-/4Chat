@@ -1,9 +1,10 @@
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
-public class Topic implements InterfaceTopic, Serializable {
+public class Topic extends UnicastRemoteObject implements InterfaceTopic, Serializable {
 
     private String topic;
     private LinkedHashSet<InterfaceForumClient> subscribers;
@@ -12,7 +13,7 @@ public class Topic implements InterfaceTopic, Serializable {
      * Constructor
      * @param topic Subject of the discussion
      */
-    public Topic(String topic) {
+    public Topic(String topic) throws RemoteException {
         this.topic = topic;
         this.subscribers = new LinkedHashSet<InterfaceForumClient>();
     }
@@ -56,7 +57,7 @@ public class Topic implements InterfaceTopic, Serializable {
      * @return the topic of the discussion
      */
     @Override
-    public String getTopic() {
+    public String getTopic() throws RemoteException {
         return this.topic;
     }
 }
