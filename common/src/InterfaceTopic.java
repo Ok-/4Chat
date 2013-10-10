@@ -30,4 +30,10 @@ public interface InterfaceTopic extends Remote {
      * @return the topic of the discussion
      */
     public String getTopic() throws RemoteException;
+
+    /**
+     * Getter on the number of subscribers on this topic
+     * @return The number of element in subscribers list
+     */
+    public int getNumberOfSubscribers() throws RemoteException;
 }

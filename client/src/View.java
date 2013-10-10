@@ -257,7 +257,16 @@ public class View extends JFrame implements ActionListener {
         } else if (e.getSource() == delTopicButton) {
             String title = newTopicText.getText();
             if (title.compareTo("") != 0) {
-                this.client.removeTopic(title);                
+                try {
+                    InterfaceTopic topic = this.client.server.getTopic(title);
+                    if (null != topic) {
+                        if (topic.getNumberOfSubscribers() == 0) {
+                            this.client.removeTopic(title);
+                        }
+                    }
+                } catch (RemoteException re) {
+                    re.printStackTrace();
+                }
             }
             
         } else {

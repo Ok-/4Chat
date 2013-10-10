@@ -60,4 +60,13 @@ public class Topic extends UnicastRemoteObject implements InterfaceTopic, Serial
     public String getTopic() throws RemoteException {
         return this.topic;
     }
+
+    /**
+     * Getter on the number of subscribers on this topic
+     * @return The number of element in subscribers list
+     */
+    @Override
+    public int getNumberOfSubscribers() throws RemoteException {
+        return this.subscribers.size();
+    }
 }
