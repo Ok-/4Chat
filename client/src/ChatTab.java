@@ -44,8 +44,8 @@ public class ChatTab extends JPanel {
         gbc.fill = GridBagConstraints.BOTH;
         panel1.add(textArea, gbc);
         sendButton = new JButton();
-        this.sendButton.addActionListener(view);
         sendButton.setText("Send");
+        this.sendButton.addActionListener(view);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
@@ -62,6 +62,7 @@ public class ChatTab extends JPanel {
         panel1.add(separator1, gbc);
         unsubscribeButton = new JButton();
         unsubscribeButton.setText("Unsubscribe");
+        this.unsubscribeButton.addActionListener(view);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 3;

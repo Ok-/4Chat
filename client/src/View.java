@@ -271,7 +271,16 @@ public class View extends JFrame implements ActionListener {
                 		this.client.broadcast(title, text);
                 		tab.textField.setText("");
             		}
-        		}
+        		} else if (e.getSource() == tab.unsubscribeButton) {
+                    try {
+                    String title = tab.getName();
+                        InterfaceTopic topic = this.client.server.getTopic(title);
+                        topic.unsubscribe(this.client);
+                        this.removeTab(title);
+                    } catch (RemoteException re) {
+                        re.printStackTrace();
+                    }
+                }
         	}
         }
     }
