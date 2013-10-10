@@ -41,7 +41,7 @@ public class ChatTab extends JPanel {
         gbc.gridwidth = 3;
         gbc.weightx = 10.0;
         gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(textArea, gbc);
         sendButton = new JButton();
         sendButton.setText("Send");
@@ -50,7 +50,7 @@ public class ChatTab extends JPanel {
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(sendButton, gbc);
         final JSeparator separator1 = new JSeparator();
         gbc = new GridBagConstraints();
@@ -67,7 +67,7 @@ public class ChatTab extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 0.3;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(unsubscribeButton, gbc);
         /*
         final JPanel spacer1 = new JPanel();
@@ -85,7 +85,7 @@ public class ChatTab extends JPanel {
         gbc.gridwidth = 2;
         gbc.weightx = 2.0;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(textField, gbc);
         /*
         final JPanel spacer2 = new JPanel();
