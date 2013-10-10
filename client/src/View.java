@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -17,6 +18,7 @@ public class View extends JFrame implements ActionListener {
     public JButton newTopicButton;
     public JButton delTopicButton;
     public JButton subscribeButton;
+    public JButton updateButton;
     public JList list;
     public LinkedList<ChatTab> chatTabs;
 
@@ -89,6 +91,7 @@ public class View extends JFrame implements ActionListener {
             gbc.weighty = 1.0;
             gbc.fill = GridBagConstraints.BOTH;
             panel.add(tabbedPane, gbc);
+
             final JPanel panel2 = new JPanel();
             panel2.setLayout(new GridBagLayout());
             tabbedPane.addTab("Menu", panel2);
@@ -102,15 +105,28 @@ public class View extends JFrame implements ActionListener {
             gbc.fill = GridBagConstraints.HORIZONTAL;
             panel2.add(subscribeButton, gbc);
             this.subscribeButton.addActionListener(this);
+
+            updateButton = new JButton();
+            updateButton.setText("Update list");
+            gbc = new GridBagConstraints();
+            gbc.gridx = 1;
+            gbc.gridy = 2;
+            gbc.gridwidth = 2;
+            gbc.weighty = 1.0;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            panel2.add(updateButton, gbc);
+            this.updateButton.addActionListener(this);
+
             final JScrollPane scrollPane1 = new JScrollPane();
             gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 1;
-            gbc.gridheight = 2;
+            gbc.gridheight = 3;
             gbc.weightx = 1.0;
             gbc.weighty = 1.0;
             gbc.fill = GridBagConstraints.BOTH;
             panel2.add(scrollPane1, gbc);
+
             this.listChansModel = new DefaultListModel();
             list = new JList(listChansModel);
             scrollPane1.setViewportView(list);
@@ -123,45 +139,50 @@ public class View extends JFrame implements ActionListener {
             gbc.weightx = 1.0;
             gbc.anchor = GridBagConstraints.WEST;
             panel2.add(label1, gbc);
+
             final JSeparator separator1 = new JSeparator();
             gbc = new GridBagConstraints();
             gbc.gridx = 0;
-            gbc.gridy = 3;
+            gbc.gridy = 4;
             gbc.gridwidth = 3;
             gbc.gridheight = 5;
             gbc.weightx = 1.0;
             gbc.weighty = 1.0;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             panel2.add(separator1, gbc);
+
             newTopicText = new JTextField();
             gbc = new GridBagConstraints();
             gbc.gridx = 0;
-            gbc.gridy = 9;
+            gbc.gridy = 10;
             gbc.weightx = 1.0;
             gbc.anchor = GridBagConstraints.WEST;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             panel2.add(newTopicText, gbc);
+
             newTopicButton = new JButton();
             newTopicButton.setText("Create");
             gbc = new GridBagConstraints();
             gbc.gridx = 1;
-            gbc.gridy = 9;
+            gbc.gridy = 10;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             this.newTopicButton.addActionListener(this);
             panel2.add(newTopicButton, gbc);
+
             delTopicButton = new JButton();
             delTopicButton.setText("Delete");
             gbc = new GridBagConstraints();
             gbc.gridx = 2;
-            gbc.gridy = 9;
+            gbc.gridy = 10;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             this.delTopicButton.addActionListener(this);
             panel2.add(delTopicButton, gbc);
+
             final JLabel label2 = new JLabel();
             label2.setText("Create a new Channel");
             gbc = new GridBagConstraints();
             gbc.gridx = 0;
-            gbc.gridy = 8;
+            gbc.gridy = 9;
             gbc.gridwidth = 3;
             gbc.weightx = 1.0;
             gbc.anchor = GridBagConstraints.WEST;
@@ -236,18 +257,14 @@ public class View extends JFrame implements ActionListener {
         // Check Menu buttons
         if (e.getSource() == newTopicButton) {
             // Add a new topic in the view list
-            /*String title = newTopicText.getText();
+            String title = newTopicText.getText();
             if (title.compareTo("") != 0) {
                 InterfaceTopic topic = this.client.topics.get(title);
                 if (null == topic) {
                     this.client.addTopic(title);
+                    this.addTab(title);
                 }
-            }*/
-        	JOptionPane.showMessageDialog(this,
-        		    "Not implemented yet",
-        		    "Error",
-        		    JOptionPane.ERROR_MESSAGE);
-            
+            }
         } else if (e.getSource() == subscribeButton) {
             String title = (String)list.getSelectedValue();
             if (null != title) {
@@ -269,6 +286,14 @@ public class View extends JFrame implements ActionListener {
                 }
             }
             
+        } else if (e.getSource() == updateButton) {
+            try {
+                ArrayList<InterfaceTopic> allTopics = this.client.server.getAllTopics();
+                this.client.initialize();
+                this.repaint();
+            } catch (RemoteException re) {
+                re.printStackTrace();
+            }
         } else {
         	Iterator<ChatTab> iterator = chatTabs.iterator();
         	while(iterator.hasNext()) {
