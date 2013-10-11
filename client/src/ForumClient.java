@@ -105,6 +105,12 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
             re.printStackTrace();
         }
     }
+    
+    public void topicClosing(String topic) {
+    	/**
+    	 * TODO : FERMER LE BON ONGLET
+    	 */
+    }
 
     /**
      * Broadcast a message on a discussion thread identified by the title.

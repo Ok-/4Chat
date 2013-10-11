@@ -18,6 +18,7 @@ public interface InterfaceTopic extends Remote {
      * @throws RemoteException
      */
     public void unsubscribe(InterfaceForumClient client) throws RemoteException;
+    
 
     /**
      * Send a message to all clients who subscribed to the topic.
@@ -39,4 +40,6 @@ public interface InterfaceTopic extends Remote {
     public int getNumberOfSubscribers() throws RemoteException;
 
 	public LinkedHashSet<InterfaceForumClient> getAllSubscribers() throws RemoteException;
+
+	public void notifyClosing() throws RemoteException;
 }

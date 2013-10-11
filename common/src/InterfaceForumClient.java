@@ -16,4 +16,10 @@ public interface InterfaceForumClient extends Remote{
      * @throws RemoteException
      */
     public String getPseudo() throws RemoteException;
+    
+    
+    /**
+     * Receive closing topic notification
+     */
+    public void topicClosing(String topic) throws RemoteException;
 }

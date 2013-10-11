@@ -59,6 +59,7 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
      */
     @Override
     public void removeTopic(String title) throws RemoteException {
+    	this.getTopic(title).notifyClosing();
         topics.remove(title);
     }
     

@@ -38,6 +38,14 @@ public class Topic extends UnicastRemoteObject implements InterfaceTopic, Serial
     public void unsubscribe(InterfaceForumClient client) throws RemoteException {
         this.subscribers.remove(client);
     }
+    
+    public void notifyClosing() throws RemoteException {
+    	Iterator it = subscribers.iterator();
+    	while(it.hasNext()) {
+    		InterfaceForumClient currentClient = (InterfaceForumClient) it.next();
+    		currentClient.topicClosing(this.topic);
+    	}
+    }
 
     /**
      * Send a message to all clients who subscribed to the topic.
