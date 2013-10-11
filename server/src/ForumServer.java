@@ -69,6 +69,9 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
      * @return a boolean. True if it's ok.
      */
 	public boolean isPseudoAvailable(String pseudo) throws RemoteException {
+		
+		System.out.println("Checking pseudo "+ pseudo + ". People connected :");
+		
 		boolean isAvailable = true;
 		
 		Iterator it = this.topics.values().iterator();
@@ -77,7 +80,11 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
 			
 			Iterator it2 = currentTopic.getAllSubscribers().iterator();
 			while(it2.hasNext() && isAvailable) {
-				if (pseudo.equals( ((InterfaceForumClient) it2.next()).getPseudo() )) {
+				String toCompare = ((InterfaceForumClient) it2.next()).getPseudo();
+				System.out.println("\t"+toCompare);
+				
+				if (pseudo.equals(toCompare)) {
+					System.out.println("\t\t--> FOUND");
 					isAvailable = false;
 				}
 			}

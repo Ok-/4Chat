@@ -24,7 +24,7 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
             this.initialize();
         }
         catch(Exception e){
-            e.printStackTrace();
+            view.exit(true, "Server isn't reachable");
         }
     }
 
@@ -50,6 +50,8 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
     }
     
     public boolean setPseudo(String pseudo) throws RemoteException {
+    	
+    	System.out.println("Trying to set pseudo");
     	
     	boolean pseudoAvailable = this.server.isPseudoAvailable(pseudo);
     	if(pseudoAvailable){

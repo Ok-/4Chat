@@ -24,6 +24,7 @@ public class View extends JFrame implements ActionListener {
 
     public View() {
         try {
+        	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
             this.chatTabs = new LinkedList<ChatTab>();
 
             this.setPreferredSize(new Dimension(500, 400));
@@ -147,11 +148,12 @@ public class View extends JFrame implements ActionListener {
         
         boolean pseudoOK = false;
         String pseudo = "Guest" + ((int)(Math.random() * (9999-1111)) + 1111);
+        String message = "Pick up your pseudo";
         
         while(!pseudoOK) {
 	        String s = (String)JOptionPane.showInputDialog(
 	                            this,
-	                            "Pick up your pseudo",
+	                            message,
 	                            "Who are you ?",
 	                            JOptionPane.PLAIN_MESSAGE,
 	                            null,
@@ -159,7 +161,6 @@ public class View extends JFrame implements ActionListener {
 	                            pseudo);
 	
 	
-	        /* TODO : vérifier que le pseudo n'est pas pris */
 	        try {
 		        if ((s != null) && (s.length() > 0)) {
 		        	pseudo = s;
@@ -169,6 +170,14 @@ public class View extends JFrame implements ActionListener {
 	        }
 	        catch (RemoteException re) {
 	            re.printStackTrace();
+	        }
+	        
+	        if(pseudoOK) {
+	        	System.out.println("Pseudo picked : " + pseudo);
+	        }
+	        else {
+	        	System.out.println("Pseudo anavailable");
+	        	message = "Pseudo already used, please choose another one";
 	        }
         }
         
@@ -295,4 +304,15 @@ public class View extends JFrame implements ActionListener {
         	}
         }
     }
+
+	public void exit(boolean writeMessage, String message) {
+		
+		if(writeMessage) {
+			JOptionPane.showMessageDialog(this,
+					message,
+			    "OOps",
+			    JOptionPane.ERROR_MESSAGE);
+		}
+		System.exit(0);
+	}
 }
