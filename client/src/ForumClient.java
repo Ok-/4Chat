@@ -3,7 +3,9 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -113,7 +115,8 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
         try {
             InterfaceTopic topic = topics.get(title);
             if (null != topic) {
-                topic.broadcast(message);
+            	Calendar calendar = new GregorianCalendar();
+                topic.broadcast("(" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ") " + this.pseudo + " : " + message);
             }
         } catch (RemoteException re) {
             re.printStackTrace();

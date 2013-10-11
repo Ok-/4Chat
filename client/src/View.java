@@ -266,6 +266,7 @@ public class View extends JFrame implements ActionListener, KeyListener, WindowL
         }
         this.chatTabs.add(chatTab);
         this.tabbedPane.addTab(title, chatTab);
+        this.tabbedPane.setSelectedComponent(chatTab);
     }    
     
     
