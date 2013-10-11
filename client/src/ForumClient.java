@@ -15,16 +15,16 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
     public View view;
     public String pseudo;
 
-    public ForumClient(View v) throws RemoteException {
+    public ForumClient(View v, String serverLocation) throws RemoteException {
         super();
         this.topics = new LinkedHashMap<String, InterfaceTopic>();
         this.view = v;
         try {
-            server = (InterfaceForumServer) Naming.lookup("//127.0.0.1:24577/server");
+            server = (InterfaceForumServer) Naming.lookup(serverLocation);
             this.initialize();
         }
         catch(Exception e){
-            view.exit(true, "Server isn't reachable");
+        	throw new RemoteException();
         }
     }
 

@@ -62,6 +62,14 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
         topics.remove(title);
     }
     
+    public void disconnect(InterfaceForumClient client) throws RemoteException {
+    	Iterator it = this.topics.values().iterator();
+		while(it.hasNext()) {
+			Topic currentTopic = (Topic) it.next();
+			currentTopic.unsubscribe(client);
+		}
+    }
+    
     
     /**
      * Check if pseudo is available

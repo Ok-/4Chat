@@ -1,9 +1,12 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.*;
 
 
-public class ChatTab extends JPanel {
+public class ChatTab extends JPanel implements KeyListener {
 	public View view;
 	public JTextArea textArea;
 	public JTextField textField;
@@ -46,6 +49,7 @@ public class ChatTab extends JPanel {
         sendButton = new JButton();
         sendButton.setText("Send");
         this.sendButton.addActionListener(view);
+        this.sendButton.setMnemonic(KeyEvent.VK_ENTER);
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
@@ -79,6 +83,7 @@ public class ChatTab extends JPanel {
         panel1.add(spacer1, gbc);
         */
         textField = new JTextField();
+        textField.addKeyListener(this);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -98,6 +103,32 @@ public class ChatTab extends JPanel {
         */
 
         this.add(panel1);
+        
         this.repaint();
+	}
+
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			System.out.println("Enter pressed");
+			this.sendButton.doClick();
+			this.textField.setText("");
+		}
+	}
+
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

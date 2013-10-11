@@ -29,6 +29,13 @@ public interface InterfaceForumServer extends Remote {
      * @return an collection with all the topics
      */
 	public ArrayList<InterfaceTopic> getAllTopics() throws RemoteException;
+	
+	
+	/**
+	 * Disconnect client
+	 * @throws RemoteException 
+	 */
+	public void disconnect(InterfaceForumClient client) throws RemoteException;
 
     /**
      * Check if pseudo is available
