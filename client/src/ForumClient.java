@@ -13,6 +13,7 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
     public InterfaceForumServer server;
     public LinkedHashMap<String, InterfaceTopic> topics;
     public View view;
+    public String pseudo;
 
     public ForumClient(View v) throws RemoteException {
         super();
@@ -39,6 +40,23 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
             String title = topic.getTopic();
             this.view.addTopic(title);
     	}
+    }
+    
+    /**
+     * Get Pseudo
+     */
+    public String getPseudo() throws RemoteException {
+    	return this.pseudo;
+    }
+    
+    public boolean setPseudo(String pseudo) throws RemoteException {
+    	
+    	boolean pseudoAvailable = this.server.isPseudoAvailable(pseudo);
+    	if(pseudoAvailable){
+        	this.pseudo = pseudo;
+    	}
+    	
+    	return pseudoAvailable;    	
     }
 
     /**

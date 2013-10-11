@@ -4,6 +4,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 public class ForumServer extends UnicastRemoteObject implements InterfaceForumServer, Serializable {
@@ -60,4 +61,31 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
     public void removeTopic(String title) throws RemoteException {
         topics.remove(title);
     }
+    
+    
+    /**
+     * Check if pseudo is available
+     * 
+     * @return a boolean. True if it's ok.
+     */
+	public boolean isPseudoAvailable(String pseudo) throws RemoteException {
+		boolean isAvailable = true;
+		
+		Iterator it = this.topics.values().iterator();
+		while(it.hasNext() & isAvailable) {
+			Topic currentTopic = (Topic) it.next();
+			
+			Iterator it2 = currentTopic.getAllSubscribers().iterator();
+			while(it2.hasNext() && isAvailable) {
+				if (pseudo.equals( ((InterfaceForumClient) it2.next()).getPseudo() )) {
+					isAvailable = false;
+				}
+			}
+		}
+		
+		return isAvailable;
+	}
+    
+    
+    
 }

@@ -29,4 +29,11 @@ public interface InterfaceForumServer extends Remote {
      * @return an collection with all the topics
      */
 	public ArrayList<InterfaceTopic> getAllTopics() throws RemoteException;
+
+    /**
+     * Check if pseudo is available
+     * 
+     * @return a boolean. True if it's ok.
+     */
+	public boolean isPseudoAvailable(String pseudo) throws RemoteException;
 }

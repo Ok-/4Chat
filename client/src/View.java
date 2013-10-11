@@ -26,59 +26,6 @@ public class View extends JFrame implements ActionListener {
         try {
             this.chatTabs = new LinkedList<ChatTab>();
 
-            /*
-            // GUI build
-            //this.setPreferredSize(new Dimension(500, 400));
-            this.panel = new JPanel();
-            this.getContentPane().add(panel);
-
-            // Tab pane
-            this.tabbedPane = new JTabbedPane();
-
-            // Menu Tab
-            this.panelTabMenu = createPanel("menu");
-            GridBagLayout gridbag = new GridBagLayout();
-            this.panelTabMenu.setLayout(gridbag);
-            
-            
-            GridBagConstraints constraints = new GridBagConstraints();
-    		constraints.anchor = GridBagConstraints.NORTHWEST;
-    		constraints.insets = new Insets(10, 0, 10, 0);
-            constraints.fill = GridBagConstraints.BOTH;
-            constraints.gridwidth = 3;
-            constraints.gridx = 0;
-            constraints.gridy = 0;
-            this.listChansModel = new DefaultListModel();
-            JList listChans = new JList(listChansModel);
-    		JScrollPane scrollableList = new JScrollPane(listChans); // Définition de la barre de scroll
-    		scrollableList.setPreferredSize(this.getPreferredSize());
-            this.panelTabMenu.add(listChans, constraints);
-
-            constraints.gridwidth = 1;
-            constraints.gridx = 0;
-            constraints.gridy = 1;
-            this.newTopicText = new JTextField("");
-            //this.newTopicText.setPreferredSize(new Dimension(150,10));
-            this.panelTabMenu.add(newTopicText, constraints);
-
-            constraints.gridx = 1;
-            constraints.gridy = 1;
-            this.newTopicButton = new JButton("Create");
-            this.newTopicButton.addActionListener(this);
-            this.panelTabMenu.add(newTopicButton, constraints);
-
-            constraints.gridx = 2;
-            constraints.gridy = 1;
-            this.delTopicButton = new JButton("Delete");
-            this.delTopicButton.addActionListener(this);
-            this.panelTabMenu.add(delTopicButton, constraints);
-
-            this.tabbedPane.addTab("Menu", panelTabMenu);
-            this.tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-
-            this.add(tabbedPane);
-            */
-
             this.setPreferredSize(new Dimension(500, 400));
             panel = new JPanel();
             panel.setLayout(new GridBagLayout());
@@ -197,6 +144,36 @@ public class View extends JFrame implements ActionListener {
         } catch (RemoteException re) {
             re.printStackTrace();
         }
+        
+        boolean pseudoOK = false;
+        String pseudo = "Guest" + ((int)(Math.random() * (9999-1111)) + 1111);
+        
+        while(!pseudoOK) {
+	        String s = (String)JOptionPane.showInputDialog(
+	                            this,
+	                            "Pick up your pseudo",
+	                            "Who are you ?",
+	                            JOptionPane.PLAIN_MESSAGE,
+	                            null,
+	                            null,
+	                            pseudo);
+	
+	
+	        /* TODO : vérifier que le pseudo n'est pas pris */
+	        try {
+		        if ((s != null) && (s.length() > 0)) {
+		        	pseudo = s;
+		        }
+        		pseudoOK = this.client.setPseudo(pseudo);
+		        
+	        }
+	        catch (RemoteException re) {
+	            re.printStackTrace();
+	        }
+        }
+        
+        this.setTitle(pseudo);
+
     }
     
     public void addMessage(String title, String message) {

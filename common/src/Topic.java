@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
@@ -68,5 +69,14 @@ public class Topic extends UnicastRemoteObject implements InterfaceTopic, Serial
     @Override
     public int getNumberOfSubscribers() throws RemoteException {
         return this.subscribers.size();
+    }
+
+    /**
+     * Get all subscribers
+     * @return LinkedHashSet of subscribers
+     */
+    @Override
+    public LinkedHashSet<InterfaceForumClient> getAllSubscribers() throws RemoteException {
+        return this.subscribers;
     }
 }
