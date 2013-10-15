@@ -12,20 +12,6 @@ public class ChatTab extends JPanel {
 	
 	
 	public ChatTab(View view, String title) {
-        /*
-		this.view = view;
-        this.setName(title);
-        this.setLayout(new GridLayout(3, 1));
-        this.textArea = new JTextArea("Welcome to the #" + title + " channel!\n");
-        this.textArea.setEditable(false);
-        this.add(textArea);
-        this.textField = new JTextField("");
-        this.add(textField);
-        this.sendButton = new JButton("Send");
-        this.add(sendButton);
-        this.sendButton.addActionListener(view);
-        */
-
         this.view = view;
         this.setName(title);
 
@@ -68,15 +54,6 @@ public class ChatTab extends JPanel {
         gbc.weightx = 0.3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(unsubscribeButton, gbc);
-        /*
-        final JPanel spacer1 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 5;
-        gbc.gridy = 3;
-        gbc.gridwidth = 3;
-        gbc.fill = GridBagConstraints.BOTH;
-        panel1.add(spacer1, gbc);
-        */
         textField = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -86,15 +63,6 @@ public class ChatTab extends JPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(textField, gbc);
-        /*
-        final JPanel spacer2 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 4;
-        gbc.fill = GridBagConstraints.BOTH;
-        panel1.add(spacer2, gbc);
-        */
 
         this.add(panel1);
         this.repaint();

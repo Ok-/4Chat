@@ -60,7 +60,7 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
         try {
             InterfaceTopic topic = server.getTopic(title);
             topic.subscribe(this);
-            if (!topics.containsValue(topic)) {
+            if (!topics.containsKey(title)) {
             	System.out.println("New topic tab : " + title);
                 topics.put(title, topic);
                 this.view.addTopic(title);
