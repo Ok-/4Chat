@@ -3,7 +3,9 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -13,17 +15,18 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
     public InterfaceForumServer server;
     public LinkedHashMap<String, InterfaceTopic> topics;
     public View view;
+    public String pseudo;
 
-    public ForumClient(View v) throws RemoteException {
+    public ForumClient(View v, String serverLocation) throws RemoteException {
         super();
         this.topics = new LinkedHashMap<String, InterfaceTopic>();
         this.view = v;
         try {
-            server = (InterfaceForumServer) Naming.lookup("//127.0.0.1:24577/server");
+            server = (InterfaceForumServer) Naming.lookup(serverLocation);
             this.initialize();
         }
         catch(Exception e){
-            e.printStackTrace();
+        	throw new RemoteException();
         }
     }
 
@@ -33,13 +36,31 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
      */
     public void initialize() throws RemoteException {
     	ArrayList<InterfaceTopic> listOfTopics = server.getAllTopics();
-    	System.out.println("Initializing " + listOfTopics.size() + " topics");
     	Iterator it = listOfTopics.iterator();
     	while(it.hasNext()) {
             InterfaceTopic topic = (InterfaceTopic) it.next();
             String title = topic.getTopic();
             this.view.addTopic(title);
     	}
+    }
+    
+    /**
+     * Get Pseudo
+     */
+    public String getPseudo() throws RemoteException {
+    	return this.pseudo;
+    }
+    
+    public boolean setPseudo(String pseudo) throws RemoteException {
+    	
+    	System.out.println("Trying to set pseudo");
+    	
+    	boolean pseudoAvailable = this.server.isPseudoAvailable(pseudo);
+    	if(pseudoAvailable){
+        	this.pseudo = pseudo;
+    	}
+    	
+    	return pseudoAvailable;    	
     }
 
     /**
@@ -61,7 +82,6 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
             InterfaceTopic topic = server.getTopic(title);
             topic.subscribe(this);
             if (!topics.containsKey(title)) {
-            	System.out.println("New topic tab : " + title);
                 topics.put(title, topic);
                 this.view.addTopic(title);
             }
@@ -80,9 +100,16 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
             topic.unsubscribe(this);
             topics.remove(title);
             this.view.removeTopic(title);
+            this.server.removeTopic(title);
         } catch (RemoteException re) {
             re.printStackTrace();
         }
+    }
+    
+    public void topicClosing(String topic) {
+    	/**
+    	 * TODO : FERMER LE BON ONGLET
+    	 */
     }
 
     /**
@@ -94,7 +121,8 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
         try {
             InterfaceTopic topic = topics.get(title);
             if (null != topic) {
-                topic.broadcast(message);
+            	Calendar calendar = new GregorianCalendar();
+                topic.broadcast("(" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ") " + this.pseudo + " : " + message);
             }
         } catch (RemoteException re) {
             re.printStackTrace();

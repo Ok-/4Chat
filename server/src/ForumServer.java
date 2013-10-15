@@ -4,6 +4,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 public class ForumServer extends UnicastRemoteObject implements InterfaceForumServer, Serializable {
@@ -23,7 +24,6 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
      */
     @Override
     public InterfaceTopic getTopic(String title) throws RemoteException {
-    	System.out.println("Returning topic " + title);
         InterfaceTopic topic = this.topics.get(title);
         if (null == topic) {
             topic = this.addTopic(title);
@@ -33,7 +33,6 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
 
 	@Override
 	public ArrayList<InterfaceTopic> getAllTopics() throws RemoteException {
-		System.out.println("Returning all topics (" + this.topics.size() + ")");
 		return new ArrayList<InterfaceTopic>(this.topics.values());
 	}
 
@@ -48,7 +47,6 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
         InterfaceTopic topic = topics.get(title);
         if (null == topic) {
             topic = new Topic(title);
-        	System.out.println("Adding topic " + title);
             topics.put(title, topic);
         }
         return topic;
@@ -61,7 +59,49 @@ public class ForumServer extends UnicastRemoteObject implements InterfaceForumSe
      */
     @Override
     public void removeTopic(String title) throws RemoteException {
-    	System.out.println("Removing topic " + title);
+    	this.getTopic(title).notifyClosing();
         topics.remove(title);
     }
+    
+    public void disconnect(InterfaceForumClient client) throws RemoteException {
+    	Iterator it = this.topics.values().iterator();
+		while(it.hasNext()) {
+			Topic currentTopic = (Topic) it.next();
+			currentTopic.unsubscribe(client);
+		}
+    }
+    
+    
+    /**
+     * Check if pseudo is available
+     * 
+     * @return a boolean. True if it's ok.
+     */
+	public boolean isPseudoAvailable(String pseudo) throws RemoteException {
+		
+		System.out.println("Checking pseudo "+ pseudo + ". People connected :");
+		
+		boolean isAvailable = true;
+		
+		Iterator it = this.topics.values().iterator();
+		while(it.hasNext() & isAvailable) {
+			Topic currentTopic = (Topic) it.next();
+			
+			Iterator it2 = currentTopic.getAllSubscribers().iterator();
+			while(it2.hasNext() && isAvailable) {
+				String toCompare = ((InterfaceForumClient) it2.next()).getPseudo();
+				System.out.println("\t"+toCompare);
+				
+				if (pseudo.equals(toCompare)) {
+					System.out.println("\t\t--> FOUND");
+					isAvailable = false;
+				}
+			}
+		}
+		
+		return isAvailable;
+	}
+    
+    
+    
 }

@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
@@ -37,6 +38,14 @@ public class Topic extends UnicastRemoteObject implements InterfaceTopic, Serial
     public void unsubscribe(InterfaceForumClient client) throws RemoteException {
         this.subscribers.remove(client);
     }
+    
+    public void notifyClosing() throws RemoteException {
+    	Iterator it = subscribers.iterator();
+    	while(it.hasNext()) {
+    		InterfaceForumClient currentClient = (InterfaceForumClient) it.next();
+    		currentClient.topicClosing(this.topic);
+    	}
+    }
 
     /**
      * Send a message to all clients who subscribed to the topic.
@@ -59,5 +68,23 @@ public class Topic extends UnicastRemoteObject implements InterfaceTopic, Serial
     @Override
     public String getTopic() throws RemoteException {
         return this.topic;
+    }
+
+    /**
+     * Getter on the number of subscribers on this topic
+     * @return The number of element in subscribers list
+     */
+    @Override
+    public int getNumberOfSubscribers() throws RemoteException {
+        return this.subscribers.size();
+    }
+
+    /**
+     * Get all subscribers
+     * @return LinkedHashSet of subscribers
+     */
+    @Override
+    public LinkedHashSet<InterfaceForumClient> getAllSubscribers() throws RemoteException {
+        return this.subscribers;
     }
 }

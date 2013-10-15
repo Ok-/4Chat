@@ -1,6 +1,7 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.LinkedHashSet;
 
 public interface InterfaceTopic extends Remote {
 
@@ -17,6 +18,7 @@ public interface InterfaceTopic extends Remote {
      * @throws RemoteException
      */
     public void unsubscribe(InterfaceForumClient client) throws RemoteException;
+    
 
     /**
      * Send a message to all clients who subscribed to the topic.
@@ -30,4 +32,14 @@ public interface InterfaceTopic extends Remote {
      * @return the topic of the discussion
      */
     public String getTopic() throws RemoteException;
+
+    /**
+     * Get all subscribers
+     * @return LinkedHashSet of subscribers
+     */
+    public int getNumberOfSubscribers() throws RemoteException;
+
+	public LinkedHashSet<InterfaceForumClient> getAllSubscribers() throws RemoteException;
+
+	public void notifyClosing() throws RemoteException;
 }
