@@ -65,17 +65,6 @@ public class View extends JFrame implements ActionListener, KeyListener, WindowL
         panel2.add(subscribeButton, gbc);
         this.subscribeButton.addActionListener(this);
 
-        delTopicButton = new JButton();
-        delTopicButton.setText("Delete");
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        this.delTopicButton.addActionListener(this);
-        panel2.add(delTopicButton, gbc);
-
         updateButton = new JButton();
         updateButton.setText("Update list");
         gbc = new GridBagConstraints();
@@ -307,22 +296,7 @@ public class View extends JFrame implements ActionListener, KeyListener, WindowL
             if (null != title) {
                 this.client.addTopic(title);
                 this.addTab(title);
-            }
-        } else if (e.getSource() == delTopicButton) {
-            String title = (String)list.getSelectedValue();
-            if (title.compareTo("") != 0) {
-                try {
-                    InterfaceTopic topic = this.client.server.getTopic(title);
-                    if (null != topic) {
-                        //if (topic.getNumberOfSubscribers() == 0) {
-                            this.client.removeTopic(title);
-                        //}
-                    }
-                } catch (RemoteException re) {
-                    re.printStackTrace();
-                }
-            }
-            
+            } 
         } else if (e.getSource() == updateButton) {
             try {
                 ArrayList<InterfaceTopic> allTopics = this.client.server.getAllTopics();
