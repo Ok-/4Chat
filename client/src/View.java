@@ -32,6 +32,7 @@ public class View extends JFrame implements ActionListener, KeyListener, WindowL
          *************************/
     	
     	this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    	this.setResizable(false);
     	this.addWindowListener(this);
     	
         this.chatTabs = new LinkedList<ChatTab>();

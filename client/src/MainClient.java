@@ -1,4 +1,3 @@
-import java.rmi.RemoteException;
 
 public class MainClient {
 

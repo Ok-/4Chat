@@ -4,11 +4,10 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+
 
 public class ForumClient extends UnicastRemoteObject implements InterfaceForumClient, Serializable {
 
@@ -36,7 +35,7 @@ public class ForumClient extends UnicastRemoteObject implements InterfaceForumCl
      */
     public void initialize() throws RemoteException {
     	ArrayList<InterfaceTopic> listOfTopics = server.getAllTopics();
-    	Iterator it = listOfTopics.iterator();
+    	Iterator<InterfaceTopic> it = listOfTopics.iterator();
     	while(it.hasNext()) {
             InterfaceTopic topic = (InterfaceTopic) it.next();
             String title = topic.getTopic();

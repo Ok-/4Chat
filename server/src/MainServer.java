@@ -10,11 +10,12 @@ public class MainServer {
             Naming.bind("//127.0.0.1:24577/server", server);
             
             server.addTopic("Cats");
-            server.addTopic("Pr0n");
+            server.addTopic("boobizzz");
             server.addTopic("Girls");
         }
         catch(Exception e) {
             e.printStackTrace();
+            System.exit(0);
         }
     }
 }
