@@ -8,24 +8,20 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import server.ForumServerInterface;
 import topic.TopicInterface;
 
-public class ViewController extends UnicastRemoteObject implements ActionListener, KeyListener, WindowListener, MouseListener, Serializable {
-	
-	private static final long serialVersionUID = -8936105737211907325L;
-	
+public class ViewController implements ActionListener, KeyListener, WindowListener, MouseListener {
+		
 	private ForumServerInterface server;
 	private View view;
 	private String pseudo;
 
-	public ViewController(ForumServerInterface forumServer, View v, String pseudo) throws RemoteException {
+	public ViewController(ForumServerInterface forumServer, View v, String pseudo) {
 		super();
 		
 		this.server = forumServer;

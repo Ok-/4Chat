@@ -26,7 +26,7 @@ public class ChatTabController extends UnicastRemoteObject implements ChatTabInt
 		this.pseudo = pseudo;
 		
 		// Subscribe
-        topic.subscribe(this);
+		this.remoteTopic.subscribe(this);
 		
 		// Activating listeners
         this.tab.textField.addKeyListener(this);
