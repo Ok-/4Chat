@@ -29,21 +29,31 @@ public class Topic extends UnicastRemoteObject implements TopicInterface, Serial
 	}
 
 	public void subscribe(ChatTabInterface client) throws RemoteException {
-		System.out.println("Subscribing");
+        this.broadcast(client.getPseudo() + " has joined");
         this.subscribers.add(client);
     }
 
     public void unsubscribe(ChatTabInterface client) throws RemoteException {
         this.subscribers.remove(client);
+        this.broadcast(client.getPseudo() + " has left");
     }
+    
+	public void forceUnsubscribe(String pseudo) throws RemoteException {
+
+        Iterator<ChatTabInterface> iterator = subscribers.iterator();
+        while (iterator.hasNext()) {
+        	ChatTabInterface client = iterator.next();
+        	if(client.getPseudo().equals(pseudo)) {
+        		this.unsubscribe(client);
+        	}
+        }
+	}
 
 	public void broadcast(String message) throws RemoteException {
 
         Iterator<ChatTabInterface> iterator = subscribers.iterator();
-        System.out.print("Broadcasting to : ");
         while (iterator.hasNext()) {
         	ChatTabInterface client = iterator.next();
-        	System.out.print(client.getPseudo() + ", ");
             client.display(message);
         }
 		

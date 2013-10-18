@@ -86,6 +86,14 @@ public class ChatTabController extends UnicastRemoteObject implements ChatTabInt
 		
 		// User wants to close this tab
 		else if (e.getSource() == tab.unsubscribeButton) {
+			
+			try {
+				remoteTopic.unsubscribe(this);
+			} catch (RemoteException e1) {
+				e1.printStackTrace();
+			}
+			this.tab.view.closeChatTab(this.tab);
+			
             /*try {
             	String topicTitle = tab.getName();
                 InterfaceTopic topic = this.client.server.getTopic(title);

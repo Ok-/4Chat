@@ -165,6 +165,21 @@ public class View extends JFrame {
         this.tabbedPane.setSelectedComponent(tab);
     }
     
+    public void closeChatTab(ChatTab tab) {
+    	
+    	// Remove tab from tabbedPane
+    	int tabNumber = this.tabbedPane.getTabCount();
+        for(int i = 0; i < tabNumber; i++) {
+            String name = this.tabbedPane.getTitleAt(i);
+            if (0 == name.compareTo(tab.getName())) {
+                this.tabbedPane.remove(i);
+            }
+        }
+        
+        // Delete the chatTab
+    	this.chatTabs.remove(tab);
+    }
+    
     public void cleanTopicList() {
     	this.listChansModel.clear();
     }

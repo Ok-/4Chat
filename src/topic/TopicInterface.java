@@ -19,6 +19,13 @@ public interface TopicInterface extends Remote {
      * @throws RemoteException
      */
     public void unsubscribe(ChatTabInterface client) throws RemoteException;
+
+    /**
+     * Force remove an user in the subscribers list when he brutally left
+     * @param pseudo Pseudo of the client to remove of the subscribers list
+     * @throws RemoteException
+     */
+    public void forceUnsubscribe(String pseudo) throws RemoteException;
     
 
     /**
