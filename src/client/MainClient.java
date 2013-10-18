@@ -110,6 +110,7 @@ public class MainClient {
         *****************************/
     	
         View v = new View();
+        ViewController c = new ViewController(forumServer, v);
     }
     
 }
