@@ -62,10 +62,7 @@ public class ChatTabController extends UnicastRemoteObject implements ChatTabInt
 	public String getPseudo() throws RemoteException {
 		return this.pseudo;
 	}
-
-	public void topicClosing(String topic) throws RemoteException {
-		
-	}
+	
 
 	
 	/*
@@ -94,13 +91,6 @@ public class ChatTabController extends UnicastRemoteObject implements ChatTabInt
 			}
 			this.tab.view.closeChatTab(this.tab);
 			
-            /*try {
-            	String topicTitle = tab.getName();
-                InterfaceTopic topic = this.client.server.getTopic(title);
-                topic.unsubscribe(this.client);
-                this.removeTab(title);
-            } catch (RemoteException re) {
-            }*/
         }
 		
 	}
@@ -115,13 +105,11 @@ public class ChatTabController extends UnicastRemoteObject implements ChatTabInt
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 

@@ -23,7 +23,6 @@ public class MainClient {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 		}
 		catch(Exception e) {
-			System.out.println("Style not found");
 		}
 		
 		
@@ -36,11 +35,12 @@ public class MainClient {
         String defaultServerLocation = "//127.0.0.1:24577/server";
         String message = "Server Location";
         
+        // Asking the server location until we will be able to establish connection (or until user cancel)
+    	InitDialogs d = new InitDialogs();
         while(!serverReachable) {
-        	// New dialog allowing client server location
-        	InitDialogs d = new InitDialogs();
         	String serverLocation = d.askString("Connecting", message, defaultServerLocation);
 	        
+        	// Cancel asked
 	        if(serverLocation == null) {
         		System.exit(0);
         	}
@@ -66,12 +66,12 @@ public class MainClient {
         String pseudo = "Guest" + ((int)(Math.random() * (9999-1111)) + 1111);
         message = "Pick up your pseudo";
         
+        // Asking a pseudo to user until he choose one available
         while(!pseudoOK) {
-        	
-        	// New dialog allowing client to type his pseudo
-        	InitDialogs d = new InitDialogs();
         	pseudo = d.askString("Who are you ?", message, pseudo);
         	
+        	
+        	// Cancel asked
         	if(pseudo == null) {
         		System.exit(0);
         	}
@@ -81,20 +81,23 @@ public class MainClient {
 				pseudoOK = forumServer.isPseudoAvailable(pseudo);
 			} catch (RemoteException e) {
 				e.printStackTrace();
-				System.exit(0);
+	        	message = "Server is unreachable, please try later";
+	        	serverReachable = false;
 			}
 	        
 	        if(pseudoOK) {
 	        	try {
 	    			forumServer.connect(pseudo);
-		        	System.out.println("Pseudo picked : " + pseudo);
 	    		} catch (RemoteException e) {
 	    			pseudoOK = false;
+		        	serverReachable = false;
 	    		}
 	        }
 	        else {
-	        	System.out.println("Pseudo anavailable");
 	        	message = "Pseudo already used, please choose another one";
+	        }
+	        if(!serverReachable) {
+	        	message = "Server is unreachable, please try later";
 	        }
         }
         
@@ -113,7 +116,6 @@ public class MainClient {
 	        v.setVisible(true);
 			c.updateTopicList();
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }

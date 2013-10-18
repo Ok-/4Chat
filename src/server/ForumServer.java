@@ -12,11 +12,11 @@ import topic.Topic;
 import topic.TopicInterface;
 
 public class ForumServer extends UnicastRemoteObject implements ForumServerInterface, Serializable {
-
-	private static final long serialVersionUID = 1L;
+	
+	private static final long serialVersionUID = -7611888499866806681L;
 	
 	private HashMap<String, TopicInterface> topics;
-	private LinkedList<String> clientPseudos;
+	private LinkedList<String> clientPseudos; // This is for checking pseudo availability
 	
 	
 
@@ -30,18 +30,6 @@ public class ForumServer extends UnicastRemoteObject implements ForumServerInter
     /**
      * Interface methods
      */
-	public TopicInterface getTopic(String title) throws RemoteException {
-		return this.topics.get(title);
-	}
-
-	public ArrayList<TopicInterface> getAllTopics() throws RemoteException {
-		return new ArrayList<TopicInterface>(this.topics.values());
-	}
-
-	public void createLocalTopic(String title) throws RemoteException {
-		TopicInterface topic = new Topic(title);
-        topics.put(title, topic);
-	}
 
 	public void connect(String pseudo) throws RemoteException {
 		this.clientPseudos.add(pseudo);
@@ -72,6 +60,19 @@ public class ForumServer extends UnicastRemoteObject implements ForumServerInter
 		}
 		
 		return isAvailable;
+	}
+	
+	public TopicInterface getTopic(String title) throws RemoteException {
+		return this.topics.get(title);
+	}
+
+	public ArrayList<TopicInterface> getAllTopics() throws RemoteException {
+		return new ArrayList<TopicInterface>(this.topics.values());
+	}
+
+	public void createLocalTopic(String title) throws RemoteException {
+		TopicInterface topic = new Topic(title);
+        topics.put(title, topic);
 	}
     
     

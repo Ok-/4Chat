@@ -20,6 +20,7 @@ import topic.TopicInterface;
 public class ViewController extends UnicastRemoteObject implements ActionListener, KeyListener, WindowListener, MouseListener, Serializable {
 	
 	private static final long serialVersionUID = -8936105737211907325L;
+	
 	private ForumServerInterface server;
 	private View view;
 	private String pseudo;
@@ -47,9 +48,11 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 		// Clean the topic list
 		this.view.cleanTopicList();
 		
+		// Get all remote topics
     	ArrayList<TopicInterface> listOfTopics = server.getAllTopics();
-    	System.out.println("Updating topic list. " + listOfTopics.size() + " found");
     	Iterator<TopicInterface> it = listOfTopics.iterator();
+    	
+    	// Add them one by one to the topic list
     	while(it.hasNext()) {
     		TopicInterface topic = (TopicInterface) it.next();
             String title = topic.getTopicTitle();
@@ -59,15 +62,15 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 	
 	public void createTopic(String topicTitle) {
 		if (topicTitle.compareTo("") != 0) {
-       	 try {
-       		 if(this.server.getTopic(topicTitle) != null) {
-					 this.view.errorDialog("Topic already exists");
-				 }
-				 else {
-					 this.server.createLocalTopic(topicTitle);
-					 this.view.newTopicText.setText("");	
-					 this.updateTopicList();
-				 }
+			try {
+				if(this.server.getTopic(topicTitle) != null) {
+					this.view.errorDialog("Topic already exists");
+				}
+				else {
+					this.server.createLocalTopic(topicTitle);
+					this.view.newTopicText.setText("");	
+					this.updateTopicList();
+				}
 			} catch (RemoteException e1) {
 				e1.printStackTrace();
 				this.view.errorDialog("Something went wrong");
@@ -84,8 +87,9 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
     		ChatTab tab = iterator.next();
     		exists |= (tab.getName().compareTo(topicTitle) == 0);
     	}
+    	
+    	// If not, subscribe !
     	if (!exists) {
-    		
 			try {
 	    		// Get the remote topic
 	    		TopicInterface topic = this.server.getTopic(topicTitle);
@@ -95,12 +99,10 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 	            new ChatTabController(chatTab, topic, this.pseudo);
 	            this.view.openChatTab(chatTab);
 	            
-	            
 			} catch (RemoteException e) {
 				e.printStackTrace();
 				this.view.errorDialog("Something went wrong");
 			}
-    		
     	}
 	}
 	
@@ -139,19 +141,16 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 
 	@Override
 	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void windowClosed(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 
 		try {
 			this.server.disconnect(this.pseudo);
@@ -164,25 +163,21 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -195,13 +190,11 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -220,28 +213,24 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 

@@ -6,7 +6,7 @@ public interface ChatTabInterface extends Remote{
 
     /**
      * Display message on the client view
-     * @param message A string which contains the message to send
+     * @param message A string which contains the message to display
      * @throws RemoteException
      */
     public void display(String message) throws RemoteException;
@@ -17,10 +17,4 @@ public interface ChatTabInterface extends Remote{
      * @throws RemoteException
      */
     public String getPseudo() throws RemoteException;
-    
-    
-    /**
-     * Receive closing topic notification
-     */
-    public void topicClosing(String topic) throws RemoteException;
 }

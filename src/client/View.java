@@ -150,7 +150,6 @@ public class View extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel2.add(newTopicButton, gbc);
 
-
         this.add(panel);
         this.pack();
     }
@@ -167,7 +166,7 @@ public class View extends JFrame {
     
     public void closeChatTab(ChatTab tab) {
     	
-    	// Remove tab from tabbedPane
+    	// First remove tab from tabbedPane
     	int tabNumber = this.tabbedPane.getTabCount();
         for(int i = 0; i < tabNumber; i++) {
             String name = this.tabbedPane.getTitleAt(i);
@@ -176,7 +175,7 @@ public class View extends JFrame {
             }
         }
         
-        // Delete the chatTab
+        // Then delete the chatTab
     	this.chatTabs.remove(tab);
     }
     
