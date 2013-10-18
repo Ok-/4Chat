@@ -1,14 +1,11 @@
 package client;
 
-import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import server.*;
+import server.ForumServerInterface;
 
 public class MainClient {
 
@@ -108,9 +105,17 @@ public class MainClient {
         * All required steps are done, creating window
         * 
         *****************************/
-    	
-        View v = new View();
-        ViewController c = new ViewController(forumServer, v);
+
+        try {
+	        View v = new View();
+	        v.setTitle("4Chat - " + pseudo);
+	        ViewController c = new ViewController(forumServer, v);
+	        v.setVisible(true);
+			c.updateTopicList();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
 }
