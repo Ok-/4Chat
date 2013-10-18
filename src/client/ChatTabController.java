@@ -14,31 +14,53 @@ public class ChatTabController extends UnicastRemoteObject implements ChatTabInt
 
 	private static final long serialVersionUID = 4228007800628222274L;
 	
-	private TopicInterface topic;
+	private TopicInterface remoteTopic;
 	private ChatTab tab;
+	private String pseudo;
 
-	protected ChatTabController(ChatTab tab, TopicInterface topic) throws RemoteException {
+	protected ChatTabController(ChatTab tab, TopicInterface topic, String pseudo) throws RemoteException {
 		super();
 		
 		this.tab = tab;
-		this.topic = topic;
+		this.remoteTopic = topic;
+		this.pseudo = pseudo;
+		
+		// Subscribe
+        topic.subscribe(this);
 		
 		// Activating listeners
         this.tab.textField.addKeyListener(this);
         this.tab.sendButton.addActionListener(this);
         this.tab.unsubscribeButton.addActionListener(this);
 	}
+	
+	
+	public void sendMessage(String text) {
+		
+		try {
+			this.remoteTopic.broadcast("<" + this.pseudo + "> : " + text);
+		} catch (RemoteException e1) {
+			try {
+				this.display("Your message has not been sent : " + text);
+			} catch (RemoteException e2) {
+				this.tab.view.errorDialog("Something went wrong");
+				e2.printStackTrace();
+			}
+			e1.printStackTrace();
+		}
+	}
 
 	
 	/*
 	 * Remote methods
 	 */
-	public void display(String title, String message) throws RemoteException {
+	public void display(String message) throws RemoteException {
+		this.tab.textArea.append(message + "\n");
 		
 	}
 
 	public String getPseudo() throws RemoteException {
-		return null;
+		return this.pseudo;
 	}
 
 	public void topicClosing(String topic) throws RemoteException {
@@ -49,15 +71,37 @@ public class ChatTabController extends UnicastRemoteObject implements ChatTabInt
 	/*
 	 * Listeners methods
 	 */
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+	public void actionPerformed(ActionEvent e) {
+		
+		// User wants to send a message
+		if (e.getSource() == tab.sendButton) {
+    		String text = this.tab.textField.getText();
+    		
+    		if (text.compareTo("") != 0) {
+    			this.tab.textField.setText("");
+        		this.sendMessage(text);
+    		}
+    		
+		}
+		
+		// User wants to close this tab
+		else if (e.getSource() == tab.unsubscribeButton) {
+            /*try {
+            	String topicTitle = tab.getName();
+                InterfaceTopic topic = this.client.server.getTopic(title);
+                topic.unsubscribe(this.client);
+                this.removeTab(title);
+            } catch (RemoteException re) {
+            }*/
+        }
 		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			this.tab.sendButton.doClick();
+		}
 		
 	}
 

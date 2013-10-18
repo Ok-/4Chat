@@ -23,14 +23,19 @@ public class ChatTab extends JPanel {
     public JButton unsubscribeButton;
 	
 	public ChatTab(View view, String title) {
+		
         this.view = view;
         this.setName(title);
+        
 
+        // Main panel
         final JPanel panel1 = new JPanel();
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc;
         panel1.setLayout(layout);
 
+        
+        // Time line
         final JScrollPane scrollPane1 = new JScrollPane();
         scrollPane1.setPreferredSize(new Dimension(470, 290));
         gbc = new GridBagConstraints();
@@ -44,6 +49,8 @@ public class ChatTab extends JPanel {
         textArea.setEditable(false);
         scrollPane1.setViewportView(textArea);
         
+        
+        // Send message
         textField = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -76,6 +83,8 @@ public class ChatTab extends JPanel {
         gbc.weighty = 1.0;
         panel1.add(separator1, gbc);
         
+        
+        // Unsubscribe button
         unsubscribeButton = new JButton();
         unsubscribeButton.setText("Unsubscribe");
         gbc = new GridBagConstraints();

@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import topic.*;
+import topic.Topic;
+import topic.TopicInterface;
 
 public class ForumServer extends UnicastRemoteObject implements ForumServerInterface, Serializable {
 

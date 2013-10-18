@@ -85,16 +85,12 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
     		
 			try {
 	    		// Get the remote topic
-	    		TopicInterface topic;
-				topic = this.server.getTopic(topicTitle);
+	    		TopicInterface topic = this.server.getTopic(topicTitle);
 	    		
 	    		// Create a new tab
 	            ChatTab chatTab = new ChatTab(this.view, topicTitle);
-	            ChatTabController c = new ChatTabController(chatTab, topic);
+	            ChatTabController c = new ChatTabController(chatTab, topic, this.pseudo);
 	            this.view.openChatTab(chatTab);
-	    		
-	    		// Subscribe to the remote topic
-	            topic.subscribe(c);
 	            
 	            
 			} catch (RemoteException e) {
@@ -124,12 +120,16 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
             if (null != topicTitle) {
             	this.subscribeTopic(topicTitle);
             }
-        } 
-
+        }
         
     	// View wants to update chans' list
         else if (e.getSource() == this.view.updateButton) {
-        	
+        	try {
+				this.updateTopicList();
+			} catch (RemoteException e1) {
+				this.view.errorDialog("Something went wrong");
+				e1.printStackTrace();
+			}
         } 
 		
 	}
