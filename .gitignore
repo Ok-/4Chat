@@ -1,7 +1,6 @@
 *.iml
 out/*
 .idea/*
-src/*
 *.class
 *.jar
 *.war
