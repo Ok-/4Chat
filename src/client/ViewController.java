@@ -23,6 +23,8 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 	private String pseudo;
 
 	public ViewController(ForumServerInterface forumServer, View v, String pseudo) throws RemoteException {
+		super();
+		
 		this.server = forumServer;
 		this.view = v;
 		this.pseudo = pseudo;
@@ -51,36 +53,77 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
             this.view.addTopic(title);
     	}
 	}
+	
+	public void createTopic(String topicTitle) {
+		if (topicTitle.compareTo("") != 0) {
+       	 try {
+       		 if(this.server.getTopic(topicTitle) != null) {
+					 this.view.errorDialog("Topic already exists");
+				 }
+				 else {
+					 this.server.createLocalTopic(topicTitle);
+					 this.view.newTopicText.setText("");	
+					 this.updateTopicList();
+				 }
+			} catch (RemoteException e1) {
+				e1.printStackTrace();
+				this.view.errorDialog("Something went wrong");
+			}
+        }
+	}
+	
+	public void subscribeTopic(String topicTitle) {
+		
+		// Check if client has already subscribe
+		Iterator<ChatTab> iterator = this.view.getChatTabs().iterator();
+    	boolean exists = false;
+    	while (iterator.hasNext()) {
+    		ChatTab tab = iterator.next();
+    		exists |= (tab.getName().compareTo(topicTitle) == 0);
+    	}
+    	if (!exists) {
+    		
+			try {
+	    		// Get the remote topic
+	    		TopicInterface topic;
+				topic = this.server.getTopic(topicTitle);
+	    		
+	    		// Create a new tab
+	            ChatTab chatTab = new ChatTab(this.view, topicTitle);
+	            ChatTabController c = new ChatTabController(chatTab, topic);
+	            this.view.openChatTab(chatTab);
+	    		
+	    		// Subscribe to the remote topic
+	            topic.subscribe(c);
+	            
+	            
+			} catch (RemoteException e) {
+				e.printStackTrace();
+				this.view.errorDialog("Something went wrong");
+			}
+    		
+    	}
+	}
+	
+	
+	/*
+	 * Listeners methods
+	 */
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
     	// View wants to add topic to the server
         if (e.getSource() == this.view.newTopicButton) {
-        	
-        	 String topicTitle = this.view.newTopicText.getText();
-             if (topicTitle.compareTo("") != 0) {
-            	 try {
-            		 if(this.server.getTopic(topicTitle) != null) {
-						 this.view.errorDialog("Topic already exists");
-					 }
-					 else {
-						 this.server.createLocalTopic(topicTitle);
-						 this.view.newTopicText.setText("");	
-						 this.updateTopicList();
-					 }
-				} catch (RemoteException e1) {
-					e1.printStackTrace();
-					this.view.errorDialog("Something went wrong");
-				}
-             }
-        	
+        	 this.createTopic(this.view.newTopicText.getText());
         }
         
-
     	// View wants to subscribe to one topic
         else if (e.getSource() == this.view.subscribeButton) {
-        	
+        	String topicTitle = (String)this.view.list.getSelectedValue();
+            if (null != topicTitle) {
+            	this.subscribeTopic(topicTitle);
+            }
         } 
 
         

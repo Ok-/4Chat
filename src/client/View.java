@@ -155,6 +155,16 @@ public class View extends JFrame {
         this.pack();
     }
     
+    public LinkedList<ChatTab> getChatTabs() {
+    	return this.chatTabs;
+    }
+    
+    public void openChatTab(ChatTab tab) {
+        this.chatTabs.add(tab);
+        this.tabbedPane.addTab(tab.getName(), tab);
+        this.tabbedPane.setSelectedComponent(tab);
+    }
+    
     public void cleanTopicList() {
     	this.listChansModel.clear();
     }

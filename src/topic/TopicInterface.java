@@ -2,6 +2,8 @@ package topic;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import client.ChatTabInterface;
+
 public interface TopicInterface extends Remote {
 	
 	/**
@@ -9,14 +11,14 @@ public interface TopicInterface extends Remote {
      * @param client Client to add to the subscribers list
      * @throws RemoteException
      */
-    //public void subscribe(ForumClientInterface client) throws RemoteException;
+    public void subscribe(ChatTabInterface client) throws RemoteException;
 
     /**
      * Remove an user in the subscribers list of this topic
      * @param client Client to remove of the subscribers list
      * @throws RemoteException
      */
-    //public void unsubscribe(ForumClientInterface client) throws RemoteException;
+    public void unsubscribe(ChatTabInterface client) throws RemoteException;
     
 
     /**
@@ -24,7 +26,7 @@ public interface TopicInterface extends Remote {
      * @param message A string which contains the message to send
      * @throws RemoteException
      */
-    //public void broadcast(String message) throws RemoteException;
+    public void broadcast(String message) throws RemoteException;
 	
 	
 	/**
