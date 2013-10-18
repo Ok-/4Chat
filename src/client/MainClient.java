@@ -109,7 +109,7 @@ public class MainClient {
         try {
 	        View v = new View();
 	        v.setTitle("4Chat - " + pseudo);
-	        ViewController c = new ViewController(forumServer, v);
+	        ViewController c = new ViewController(forumServer, v, pseudo);
 	        v.setVisible(true);
 			c.updateTopicList();
 		} catch (RemoteException e) {

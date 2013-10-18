@@ -20,10 +20,12 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 	private static final long serialVersionUID = -8936105737211907325L;
 	private ForumServerInterface server;
 	private View view;
+	private String pseudo;
 
-	public ViewController(ForumServerInterface forumServer, View v) throws RemoteException {
+	public ViewController(ForumServerInterface forumServer, View v, String pseudo) throws RemoteException {
 		this.server = forumServer;
 		this.view = v;
+		this.pseudo = pseudo;
 		
 		// Activating listeners
     	this.view.addWindowListener(this);
@@ -59,11 +61,12 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
         	 String topicTitle = this.view.newTopicText.getText();
              if (topicTitle.compareTo("") != 0) {
             	 try {
-					if(this.server.getTopic(topicTitle) == null) {
+            		 if(this.server.getTopic(topicTitle) != null) {
 						 this.view.errorDialog("Topic already exists");
 					 }
 					 else {
 						 this.server.createLocalTopic(topicTitle);
+						 this.view.newTopicText.setText("");	
 						 this.updateTopicList();
 					 }
 				} catch (RemoteException e1) {
@@ -103,7 +106,13 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 	@Override
 	public void windowClosing(WindowEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
+		try {
+			this.server.disconnect(this.pseudo);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		System.exit(0);
 	}
 
 	@Override
@@ -131,9 +140,10 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 	}
 
 	@Override
-	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			this.view.newTopicButton.doClick();
+		}
 	}
 
 	@Override
