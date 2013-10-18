@@ -1,10 +1,11 @@
 *.iml
 out/*
 .idea/*
-src/*
 *.class
 *.jar
 *.war
 *.ear
 .classpath
 .project
+.settings
+.settings/*
