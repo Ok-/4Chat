@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.Serializable;
@@ -15,7 +17,7 @@ import java.util.Iterator;
 import server.ForumServerInterface;
 import topic.TopicInterface;
 
-public class ViewController extends UnicastRemoteObject implements ActionListener, KeyListener, WindowListener, Serializable {
+public class ViewController extends UnicastRemoteObject implements ActionListener, KeyListener, WindowListener, MouseListener, Serializable {
 	
 	private static final long serialVersionUID = -8936105737211907325L;
 	private ForumServerInterface server;
@@ -36,6 +38,7 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
         this.view.updateButton.addActionListener(this);
         this.view.newTopicText.addKeyListener(this);
         this.view.newTopicButton.addActionListener(this);
+        this.view.list.addMouseListener(this);
 	}
 	
 	
@@ -89,7 +92,7 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 	    		
 	    		// Create a new tab
 	            ChatTab chatTab = new ChatTab(this.view, topicTitle);
-	            ChatTabController c = new ChatTabController(chatTab, topic, this.pseudo);
+	            new ChatTabController(chatTab, topic, this.pseudo);
 	            this.view.openChatTab(chatTab);
 	            
 	            
@@ -154,6 +157,7 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 			this.server.disconnect(this.pseudo);
 		} catch (RemoteException e) {
 			e.printStackTrace();
+			System.exit(0);
 		}
 		System.exit(0);
 	}
@@ -197,6 +201,46 @@ public class ViewController extends UnicastRemoteObject implements ActionListene
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+		if(e.getSource() == this.view.list) {
+			if(e.getClickCount() == 2){
+		    	this.subscribeTopic((String)this.view.list.getSelectedValue());
+			}
+		}
+		
+	}
+
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

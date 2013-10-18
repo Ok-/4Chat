@@ -5,6 +5,8 @@ import javax.swing.JOptionPane;
 
 public class InitDialogs extends JFrame {
 	
+	private static final long serialVersionUID = -5969015269734138105L;
+
 	public InitDialogs() {
 		super();
 	}
