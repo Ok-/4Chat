@@ -11,9 +11,9 @@ public class MainServer {
             LocateRegistry.createRegistry(24577);
             Naming.bind("//127.0.0.1:24577/server", server);
             
-            /*server.addTopic("Cats");
-            server.addTopic("boobizzz");
-            server.addTopic("Girls");*/
+            server.createLocalTopic("Cats");
+            server.createLocalTopic("boobizzz");
+            server.createLocalTopic("Girls");
         }
         catch(Exception e) {
             e.printStackTrace();
