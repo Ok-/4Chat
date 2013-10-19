@@ -9,6 +9,3 @@ out/*
 .project
 .settings
 .settings/*
-docs/*.png
-docs/*.jpg
-docs/*.jpeg
