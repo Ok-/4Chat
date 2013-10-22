@@ -17,13 +17,15 @@ public class ForumServer extends UnicastRemoteObject implements ForumServerInter
 	
 	private HashMap<String, TopicInterface> topics;
 	private LinkedList<String> clientPseudos; // This is for checking pseudo availability
+	private ProviderHandler providers;
 	
 	
 
-    public ForumServer() throws RemoteException {
+    public ForumServer(ProviderHandler p) throws RemoteException {
         super();
         this.topics = new HashMap<String, TopicInterface>();
         this.clientPseudos = new LinkedList<String>();
+        this.providers = p;
     }
 
     
@@ -63,14 +65,25 @@ public class ForumServer extends UnicastRemoteObject implements ForumServerInter
 	}
 	
 	public TopicInterface getTopic(String title) throws RemoteException {
-		return this.topics.get(title);
+		TopicInterface topic = this.topics.get(title);
+		
+		// Si pas trouvé localement, on cherche chez les hosters
+		if(topic == null) {
+			topic = providers.getTopic(title);
+		}
+		
+		return topic;
 	}
 
 	public ArrayList<TopicInterface> getAllTopics() throws RemoteException {
-		return new ArrayList<TopicInterface>(this.topics.values());
+		ArrayList<TopicInterface> allTopics = new ArrayList<TopicInterface>(this.topics.values());
+		allTopics.addAll(this.providers.getAllTopicsHosted());
+		
+		return allTopics;
 	}
 
 	public void createLocalTopic(String title) throws RemoteException {
+		// TODO : gérer la création sur les providers avec getCapacity()
 		TopicInterface topic = new Topic(title);
         topics.put(title, topic);
 	}
