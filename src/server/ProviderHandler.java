@@ -46,7 +46,10 @@ public class ProviderHandler extends UnicastRemoteObject implements ProviderHand
 	public TopicInterface getTopic(String name) {
 		TopicInterface topic = null;
 		try {
-			topic = topics.get(name).getTopic(name);
+			HosterInterface topicHoster = this.topics.get(name);
+			if(topicHoster != null) {
+				topic = topicHoster.getTopic(name);
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -54,16 +57,67 @@ public class ProviderHandler extends UnicastRemoteObject implements ProviderHand
 		return topic;
 	}
 	
+	public boolean createHostedTopic(String topicTitle) {
+		
+		
+		// First : choose one hoster
+		HosterInterface lessOverloadedHoster = null;
+		int lessOverloadedHosterCapacity = -1;
+		
+		Iterator<HosterInterface> it = hosters.iterator();
+		while(it.hasNext()) {
+			HosterInterface currentHoster = it.next();
+			try {
+				int currentHosterCapacity = currentHoster.getServerLoad();
+				
+				// If we didn't found an hoster yet and if currentHoster has capacity,
+				// we choose it
+				if(lessOverloadedHoster == null) {
+					if(currentHosterCapacity < 100) {
+						lessOverloadedHoster = currentHoster;
+						lessOverloadedHosterCapacity = currentHosterCapacity;
+					}
+				}
+				// If we have already find an hoster, check if currentHoster
+				// has more capacity or not, so we can choose it or not
+				else if(currentHosterCapacity < lessOverloadedHosterCapacity) {
+					lessOverloadedHoster = currentHoster;
+					lessOverloadedHosterCapacity = currentHosterCapacity;
+				}
+			}
+			catch(RemoteException re) {
+				re.printStackTrace();
+			}
+		}
+					
+			
+		// Second : try to create a topic on the hoster choosen before
+		boolean topicCreated = false;
+		if(lessOverloadedHoster != null) {
+			try {
+				lessOverloadedHoster.createHostedTopic(topicTitle);
+				topicCreated = true;
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return topicCreated;
+	}
+	
 	/*
 	 * Remote methods
 	 */
 	
 	public void register(HosterInterface hoster) throws RemoteException {
+		System.out.println("Registering provider");
 		this.hosters.add(hoster);
 	}
 
 	public void registerTopic(String topicTitle, HosterInterface hoster) throws RemoteException {
-        topics.put(topicTitle, hoster);
+        System.out.println("Registering topic on hoster");
+		topics.put(topicTitle, hoster);
 	}
+
 
 }

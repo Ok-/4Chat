@@ -63,7 +63,7 @@ public class ViewController implements ActionListener, KeyListener, WindowListen
 					this.view.errorDialog("Topic already exists");
 				}
 				else {
-					this.server.createLocalTopic(topicTitle);
+					this.server.createTopic(topicTitle);
 					this.view.newTopicText.setText("");	
 					this.updateTopicList();
 				}

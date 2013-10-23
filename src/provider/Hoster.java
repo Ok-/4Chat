@@ -45,9 +45,15 @@ public class Hoster extends UnicastRemoteObject implements HosterInterface, Seri
 		return new ArrayList<TopicInterface>(this.topics.values());
 	}
 
-	public void createHostedTopic(String title) throws RemoteException {
-		TopicInterface topic = new Topic(title);
-        topics.put(title, topic);
+	public void createHostedTopic(String topicTitle) throws RemoteException {
+		if(this.topics.size() < this.capacity) {
+			TopicInterface topic = new Topic(topicTitle);
+	        this.topics.put(topicTitle, topic);
+	        this.server.registerTopic(topicTitle, this);
+		}
+		else {
+			throw new RemoteException("hoster overloaded");
+		}
 	}
 
 	public int getServerLoad() throws RemoteException {

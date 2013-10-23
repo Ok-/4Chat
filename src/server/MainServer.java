@@ -6,7 +6,8 @@ import java.rmi.registry.LocateRegistry;
 public class MainServer {
 
     public static void main(final String[] args) throws RemoteException {
-    	 
+
+		int topicCapacity = 100;
 
     	// Init connection with providers
         ProviderHandlerInterface providers = new ProviderHandler();
@@ -22,14 +23,14 @@ public class MainServer {
         
     	
     	// Init connection with clients
-        ForumServerInterface server = new ForumServer((ProviderHandler) providers);
+        ForumServerInterface server = new ForumServer((ProviderHandler) providers, topicCapacity);
     	try {
             LocateRegistry.createRegistry(24577);
             Naming.bind("//127.0.0.1:24577/server", server);
             
-            server.createLocalTopic("Cats");
+            /*server.createLocalTopic("Cats");
             server.createLocalTopic("boobizzz");
-            server.createLocalTopic("Girls");
+            server.createLocalTopic("Girls");*/
         }
         catch(Exception e) {
             e.printStackTrace();

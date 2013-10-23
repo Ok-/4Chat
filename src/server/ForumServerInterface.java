@@ -54,6 +54,6 @@ public interface ForumServerInterface extends Remote {
 	 * @param title
 	 * @throws RemoteException
 	 */
-	public void createLocalTopic(String title) throws RemoteException;
+	public void createTopic(String topicTitle) throws RemoteException;
 	
 }

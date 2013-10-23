@@ -29,7 +29,7 @@ public interface HosterInterface extends Remote {
 	 * @param title
 	 * @throws RemoteException
 	 */
-	public void createHostedTopic(String title) throws RemoteException;
+	public void createHostedTopic(String topicTitle) throws RemoteException;
 
 	
 	/**
