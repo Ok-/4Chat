@@ -65,12 +65,15 @@ public class ForumServer extends UnicastRemoteObject implements ForumServerInter
 		// Remove client from the list of pseudos
 		this.clientPseudos.remove(pseudo);
 		
-		// Then, force unsubscribe this client from all topics
-		Iterator<TopicInterface> it = this.topics.values().iterator();
+		// Force unsubscribe this client from all local topics
+		ArrayList<TopicInterface> allTopics = this.getAllTopics();
+		Iterator<TopicInterface> it = allTopics.iterator();
 		while(it.hasNext()) {
 			TopicInterface currentTopic = (TopicInterface) it.next();
 			currentTopic.forceUnsubscribe(pseudo);
 		}
+		
+		// Then, force unsubscribe this client from all remote topics
 	}
 
 	public boolean isPseudoAvailable(String pseudo) throws RemoteException {

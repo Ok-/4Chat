@@ -104,6 +104,7 @@ public class ProviderHandler extends UnicastRemoteObject implements ProviderHand
 		
 		return topicCreated;
 	}
+
 	
 	/*
 	 * Remote methods
@@ -118,6 +119,7 @@ public class ProviderHandler extends UnicastRemoteObject implements ProviderHand
         System.out.println("Registering topic on hoster");
 		topics.put(topicTitle, hoster);
 	}
+
 
 
 }

@@ -54,7 +54,14 @@ public class Topic extends UnicastRemoteObject implements TopicInterface, Serial
         Iterator<ChatTabInterface> iterator = subscribers.iterator();
         while (iterator.hasNext()) {
         	ChatTabInterface client = iterator.next();
-            client.display(message);
+        	try {
+        		client.display(message);
+        	}
+        	catch(RemoteException re) {
+        		// Si on n'arrive pas à joindre le client, on le jarte
+        		this.subscribers.remove(client);
+        		throw new RemoteException();
+        	}
         }
 		
 	}

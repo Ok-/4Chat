@@ -46,7 +46,6 @@ public class ChatTabController extends UnicastRemoteObject implements ChatTabInt
 				this.tab.view.errorDialog("Something went wrong");
 				e2.printStackTrace();
 			}
-			e1.printStackTrace();
 		}
 	}
 
