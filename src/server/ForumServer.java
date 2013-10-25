@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import exceptions.ServerOverloadedException;
+import exceptions.UniqueTitleViolationException;
 import topic.Topic;
 import topic.TopicInterface;
 
@@ -26,6 +28,7 @@ public class ForumServer extends UnicastRemoteObject implements ForumServerInter
         this.topics = new HashMap<String, TopicInterface>();
         this.clientPseudos = new LinkedList<String>();
         this.providers = p;
+        this.capacity = capacity;
     }
 
 	public int getServerLoad() {
@@ -33,12 +36,14 @@ public class ForumServer extends UnicastRemoteObject implements ForumServerInter
 		return (topics.size() * 100) / this.capacity;
 	}
 	
-	public boolean createLocalTopic(String topicTitle) {
+	public boolean createLocalTopic(String topicTitle) throws UniqueTitleViolationException{
 		boolean topicCreated = false;
 		
 		// Create topic only if there is capacity for
 		// TODO : récupérer la charge serveur avec getServerLoad()
+		System.out.println("capacity = " + this.topics.size() + "/" + this.capacity);
 		if(this.topics.size() < this.capacity) {
+			System.out.println("Capacity OK");
 			TopicInterface topic;
 			try {
 				topic = new Topic(topicTitle);
@@ -91,6 +96,11 @@ public class ForumServer extends UnicastRemoteObject implements ForumServerInter
 		return isAvailable;
 	}
 	
+	public boolean isTopicTitleAvailable(String topicTitle) throws RemoteException {
+		
+		return true;
+	}
+	
 	public TopicInterface getTopic(String title) throws RemoteException {
 		TopicInterface topic = this.topics.get(title);
 		
@@ -109,9 +119,7 @@ public class ForumServer extends UnicastRemoteObject implements ForumServerInter
 		return allTopics;
 	}
 
-	public void createTopic(String topicTitle) throws RemoteException {
-		
-		// TODO : check the topicTitle doesn't exists yet (both locally and remotely)
+	public void createTopic(String topicTitle) throws RemoteException, UniqueTitleViolationException, ServerOverloadedException {
 		
 		// Try to create the topic on one of the providers
 		boolean topicCreated = this.providers.createHostedTopic(topicTitle);
@@ -129,8 +137,8 @@ public class ForumServer extends UnicastRemoteObject implements ForumServerInter
 		
 		// If it's no more possible, raise an exception
 		if(!topicCreated) {
-			System.out.println("Topic " + topicTitle + " has not been created");
-			throw new RemoteException("server overloaded");
+			System.out.println("Topic " + topicTitle + " has not been created (server overloaded)");
+			throw new ServerOverloadedException("server overloaded");
 		}
 	}
     

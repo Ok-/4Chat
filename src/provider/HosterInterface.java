@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import exceptions.UniqueTitleViolationException;
 import topic.TopicInterface;
 
 public interface HosterInterface extends Remote {
@@ -28,8 +29,9 @@ public interface HosterInterface extends Remote {
 	 * Create a new topic that will be hosted by Hoster object
 	 * @param title
 	 * @throws RemoteException
+	 * @throws UniqueTitleViolationException
 	 */
-	public void createHostedTopic(String topicTitle) throws RemoteException;
+	public void createHostedTopic(String topicTitle) throws RemoteException, UniqueTitleViolationException;
 
 	
 	/**

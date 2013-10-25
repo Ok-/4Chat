@@ -7,7 +7,7 @@ public class MainServer {
 
     public static void main(final String[] args) throws RemoteException {
 
-		int topicCapacity = 100;
+		int topicCapacity = 2;
 
     	// Init connection with providers
         ProviderHandlerInterface providers = new ProviderHandler();

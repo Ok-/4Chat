@@ -4,7 +4,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import provider.HosterInterface;
-import topic.TopicInterface;
 
 public interface ProviderHandlerInterface extends Remote {
 

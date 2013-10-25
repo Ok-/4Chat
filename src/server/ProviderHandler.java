@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import exceptions.UniqueTitleViolationException;
 import provider.HosterInterface;
 import topic.TopicInterface;
 
@@ -57,7 +58,7 @@ public class ProviderHandler extends UnicastRemoteObject implements ProviderHand
 		return topic;
 	}
 	
-	public boolean createHostedTopic(String topicTitle) {
+	public boolean createHostedTopic(String topicTitle) throws UniqueTitleViolationException {
 		
 		
 		// First : choose one hoster

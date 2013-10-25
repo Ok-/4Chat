@@ -12,6 +12,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import exceptions.ServerOverloadedException;
+import exceptions.UniqueTitleViolationException;
 import server.ForumServerInterface;
 import topic.TopicInterface;
 
@@ -70,6 +72,12 @@ public class ViewController implements ActionListener, KeyListener, WindowListen
 			} catch (RemoteException e1) {
 				e1.printStackTrace();
 				this.view.errorDialog("Something went wrong");
+			} catch (UniqueTitleViolationException e) {
+				e.printStackTrace();
+				this.view.errorDialog("Topic already exists");
+			} catch (ServerOverloadedException e) {
+				e.printStackTrace();
+				this.view.errorDialog("Server overloaded");
 			}
         }
 	}

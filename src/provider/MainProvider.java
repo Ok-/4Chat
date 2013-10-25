@@ -10,7 +10,7 @@ public class MainProvider {
 	public static void main(String[] args) {
 
 		ProviderHandlerInterface server = null;
-		int topicCapacity = 100;
+		int topicCapacity = 4;
     	
 		try {
         	server = (ProviderHandlerInterface) Naming.lookup("//127.0.0.1:24666/server");
